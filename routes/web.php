@@ -17,6 +17,8 @@ use App\Livewire\Admin\ServiceForm;
 use App\Livewire\Admin\ServicesIndex;
 use App\Livewire\Admin\SiteSettingsEditor;
 use App\Livewire\Admin\TranslationsEditor;
+use App\Livewire\Admin\UserForm;
+use App\Livewire\Admin\UsersIndex;
 use App\Livewire\Admin\TeamMemberForm;
 use App\Livewire\Admin\TeamMembersIndex;
 use App\Livewire\Admin\TestimonialForm;
@@ -104,4 +106,7 @@ Route::prefix('admin')->middleware(['auth', 'verified'])->name('admin.')->group(
     Route::get('/pages/create', PageForm::class)->name('pages.create');
     Route::get('/pages/{page}/edit', PageForm::class)->name('pages.edit');
     Route::get('/translations', TranslationsEditor::class)->name('translations');
+    Route::get('/users', UsersIndex::class)->name('users.index');
+    Route::get('/users/create', UserForm::class)->name('users.create');
+    Route::get('/users/{user}/edit', UserForm::class)->name('users.edit');
 });

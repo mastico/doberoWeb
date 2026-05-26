@@ -331,10 +331,20 @@ All admin routes are behind `['auth', 'verified']` middleware. Post-login redire
 | `/admin/translations` | `TranslationsEditor` | All UI translation strings |
 | `/admin/nav` | `NavBuilder` | Navigation items |
 | `/admin/pages` | `PagesIndex` / `PageForm` | Custom CMS pages |
+| `/admin/users` | `UsersIndex` / `UserForm` | Admin user accounts |
 
 ### File uploads
 
 Admin image uploads use Livewire's `WithFileUploads`. Files land in `storage/app/public` and are served via the `public/storage` symlink. Run `php artisan storage:link` on every fresh deployment.
+
+### User management (`/admin/users`)
+
+Admins can create, edit, and delete application users:
+
+- **List** (`/admin/users`) — table with name, email, verified status, 2FA, joined date
+- **Create** (`/admin/users/create`) — name, email, password (admin-created users are pre-verified)
+- **Edit** (`/admin/users/{user}/edit`) — change name, email, or password; if email changes the user must re-verify
+- **Delete** — any user except the currently logged-in account (self-delete is forbidden)
 
 ---
 

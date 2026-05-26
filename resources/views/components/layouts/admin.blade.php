@@ -33,6 +33,7 @@
                 'Page Sections' => route('admin.page-sections'),
                 'Site Settings' => route('admin.settings'),
                 'Translations' => route('admin.translations'),
+                'Users' => route('admin.users.index'),
             ] as $label => $url)
                 <a href="{{ $url }}" class="block rounded-xl px-4 py-3 transition hover:bg-white/10">{{ $label }}</a>
             @endforeach
