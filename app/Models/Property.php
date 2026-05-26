@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Spatie\Translatable\HasTranslations;
 
@@ -60,8 +59,6 @@ class Property extends Model
                 $property->slug = Str::slug(implode(' ', $parts));
             }
         });
-        static::saved(fn () => Cache::forget('homepage.featured'));
-        static::deleted(fn () => Cache::forget('homepage.featured'));
     }
 
     public function reviews(): HasMany

@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Cache;
 use Spatie\Translatable\HasTranslations;
 
 class Testimonial extends Model
@@ -28,12 +27,6 @@ class Testimonial extends Model
         return [
             'is_active' => 'boolean',
         ];
-    }
-
-    protected static function booted(): void
-    {
-        static::saved(fn () => Cache::forget('homepage.testimonials'));
-        static::deleted(fn () => Cache::forget('homepage.testimonials'));
     }
 
     public function scopeActive(Builder $query): Builder
