@@ -4,6 +4,7 @@ namespace App\Livewire\Admin;
 
 use App\Livewire\Admin\Concerns\HandlesTranslations;
 use App\Models\SiteSetting;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -47,10 +48,13 @@ class SiteSettingsEditor extends Component
             }
 
             $setting->save();
+
+            SiteSetting::forgetCache($key);
         }
 
         if ($this->logoUpload) {
             SiteSetting::set('logo', $this->logoUpload->store('settings', 'public'), 'image');
+            SiteSetting::forgetCache('logo');
         }
 
         session()->flash('status', 'Site settings updated successfully.');

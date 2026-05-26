@@ -19,7 +19,8 @@
 10. [Image Handling](#10-image-handling)
 11. [Frontend Architecture](#11-frontend-architecture)
 12. [Testing](#12-testing)
-13. [Deployment & Restore](#13-deployment--restore)
+13. [Caching](#13-caching)
+14. [Deployment & Restore](#14-deployment--restore)
 
 ---
 
@@ -496,7 +497,47 @@ php artisan test --filter test_method_name      # single method
 
 ---
 
-## 13. Deployment & Restore
+## 13. Caching
+
+Cache driver: **`file`** (`storage/framework/cache/`). Set in `.env`:
+
+```env
+CACHE_STORE=file
+```
+
+The file driver is preferred over `database` to avoid write-amplification on the shared SQLite file. No Redis or Memcached required.
+
+### What is cached
+
+| Data | Cache key | TTL | Invalidated by |
+|---|---|---|---|
+| `PageSection::getSection()` | `page_section.{page}.{key}` | forever | `PageSectionsEditor::save()` |
+| `SiteSetting::get()` | `site_setting.{key}.{locale}` | forever | `SiteSettingsEditor::save()` |
+| Homepage aggregates | `homepage.agents/testimonials/services/posts/featured` | forever | Relevant admin Form/Index save & delete |
+| `PropertyDetail` per slug | `property.{slug}` | **5 minutes** | `PropertyForm::save()`, `PropertiesIndex::delete()` |
+| Translation groups | `translations.{group}` | forever | `TranslationsEditor` → `TranslationFileManager::saveGroup()` |
+
+**`PropertiesListing` is not cached** — user-driven search, filters, and pagination make caching impractical.
+
+### Cache key design notes
+
+- `SiteSetting` cache keys include the locale (`site_setting.{key}.en`) because translatable settings resolve differently per locale.
+- `PageSection` models are cached whole (all locales in the JSON column); locale resolution happens at Blade render time via `$section->title`.
+- Homepage aggregate caches hold full Eloquent Collections; cleared as a unit when content changes.
+
+### Invalidation helpers
+
+`PageSection::forgetCache(string $page, string $key)` and `SiteSetting::forgetCache(string $key)` are static helpers that centralise the `Cache::forget()` call(s) per model.
+
+### Manual cache clear
+
+```bash
+php artisan cache:clear
+```
+
+---
+
+## 14. Deployment & Restore
 
 ### Fresh server setup
 

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
 use Spatie\Translatable\HasTranslations;
 
@@ -32,21 +33,34 @@ class SiteSetting extends Model
             return $default;
         }
 
-        $setting = static::query()->where('key', $key)->first();
+        $locale = app()->getLocale();
+        $cacheKey = "site_setting.{$key}.{$locale}";
 
-        if (! $setting) {
-            return $default;
+        return Cache::rememberForever($cacheKey, function () use ($key, $default, $locale) {
+            $setting = static::query()->where('key', $key)->first();
+
+            if (! $setting) {
+                return $default;
+            }
+
+            if (! Schema::hasColumn('site_settings', 'is_translatable')) {
+                return $setting->getRawOriginal('value') ?? $default;
+            }
+
+            if ($setting->is_translatable) {
+                return $setting->getTranslation('value', $locale, true) ?? $default;
+            }
+
+            return $setting->getTranslation('value', config('locales.default', 'en'), false) ?? $default;
+        });
+    }
+
+    /** Forget cached values for a setting key across all locales. */
+    public static function forgetCache(string $key): void
+    {
+        foreach (array_keys(config('locales.available', ['en' => 'English'])) as $locale) {
+            Cache::forget("site_setting.{$key}.{$locale}");
         }
-
-        if (! Schema::hasColumn('site_settings', 'is_translatable')) {
-            return $setting->getRawOriginal('value') ?? $default;
-        }
-
-        if ($setting->is_translatable) {
-            return $setting->getTranslation('value', app()->getLocale(), true) ?? $default;
-        }
-
-        return $setting->getTranslation('value', config('locales.default', 'en'), false) ?? $default;
     }
 
     public static function set(string $key, mixed $value, string $type = 'text', bool $isTranslatable = false): self

@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\ContactInquiry;
 use App\Models\Property;
 use App\Models\PropertyReview;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 
 class PropertyDetail extends Component
@@ -39,7 +40,11 @@ class PropertyDetail extends Component
 
     public function mount(string $slug): void
     {
-        $this->property = Property::where('slug', $slug)->firstOrFail();
+        $this->property = Cache::remember(
+            "property.{$slug}",
+            now()->addMinutes(5),
+            fn () => Property::where('slug', $slug)->firstOrFail()
+        );
     }
 
     public function submitTour(): void

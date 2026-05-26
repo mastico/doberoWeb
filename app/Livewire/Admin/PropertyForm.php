@@ -5,6 +5,7 @@ namespace App\Livewire\Admin;
 use App\Livewire\Admin\Concerns\HandlesTranslations;
 use App\Models\Property;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -96,6 +97,8 @@ class PropertyForm extends Component
         $property->setTranslations('description', $this->normalizeTranslations($this->form['description']));
         $property->save();
 
+        Cache::forget("property.{$property->slug}");
+        Cache::forget('homepage.featured');
         session()->flash('status', 'Property saved successfully.');
 
         return $this->redirectRoute('admin.properties.index', navigate: true);

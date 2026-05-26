@@ -4,6 +4,7 @@ namespace App\Livewire\Admin;
 
 use App\Livewire\Admin\Concerns\HandlesTranslations;
 use App\Models\PageSection;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 
 class PageSectionsEditor extends Component
@@ -97,6 +98,7 @@ class PageSectionsEditor extends Component
         $section->is_active = $this->form['is_active'];
         $section->save();
 
+        PageSection::forgetCache($section->page, $section->section_key);
         session()->flash('status', 'Page section updated successfully.');
     }
 

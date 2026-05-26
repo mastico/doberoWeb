@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin;
 
 use App\Models\Property;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -19,7 +20,10 @@ class PropertiesIndex extends Component
 
     public function delete(int $id): void
     {
-        Property::findOrFail($id)->delete();
+        $property = Property::findOrFail($id);
+        Cache::forget("property.{$property->slug}");
+        Cache::forget('homepage.featured');
+        $property->delete();
         session()->flash('status', 'Property deleted successfully.');
     }
 

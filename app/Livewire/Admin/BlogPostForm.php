@@ -5,6 +5,7 @@ namespace App\Livewire\Admin;
 use App\Livewire\Admin\Concerns\HandlesTranslations;
 use App\Models\BlogPost;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -71,6 +72,7 @@ class BlogPostForm extends Component
         $post->setTranslations('content', $this->normalizeTranslations($this->form['content']));
         $post->save();
 
+        Cache::forget('homepage.posts');
         session()->flash('status', 'Blog post saved successfully.');
 
         return $this->redirectRoute('admin.blog.index', navigate: true);

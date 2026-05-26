@@ -5,6 +5,7 @@ namespace App\Livewire\Admin;
 use App\Livewire\Admin\Concerns\HandlesTranslations;
 use App\Models\Testimonial;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -61,6 +62,7 @@ class TestimonialForm extends Component
         $testimonial->setTranslations('author_role', $this->normalizeTranslations($this->form['author_role']));
         $testimonial->save();
 
+        Cache::forget('homepage.testimonials');
         session()->flash('status', 'Testimonial saved successfully.');
 
         return $this->redirectRoute('admin.testimonials.index', navigate: true);

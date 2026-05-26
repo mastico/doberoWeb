@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
 use Spatie\Translatable\HasTranslations;
 
@@ -37,11 +38,19 @@ class PageSection extends Model
             return null;
         }
 
-        return static::query()
-            ->where('page', $page)
-            ->where('section_key', $sectionKey)
-            ->where('is_active', true)
-            ->first();
+        return Cache::rememberForever("page_section.{$page}.{$sectionKey}", function () use ($page, $sectionKey) {
+            return static::query()
+                ->where('page', $page)
+                ->where('section_key', $sectionKey)
+                ->where('is_active', true)
+                ->first();
+        });
+    }
+
+    /** Forget the cached value for a specific section. */
+    public static function forgetCache(string $page, string $sectionKey): void
+    {
+        Cache::forget("page_section.{$page}.{$sectionKey}");
     }
 
     public function extraTrans(string $path, mixed $default = null): mixed

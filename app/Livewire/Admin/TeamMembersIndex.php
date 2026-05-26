@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin;
 
 use App\Models\TeamMember;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 
 class TeamMembersIndex extends Component
@@ -10,6 +11,7 @@ class TeamMembersIndex extends Component
     public function delete(int $id): void
     {
         TeamMember::findOrFail($id)->delete();
+        Cache::forget('homepage.agents');
         session()->flash('status', 'Team member deleted successfully.');
     }
 

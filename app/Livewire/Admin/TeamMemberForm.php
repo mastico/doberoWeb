@@ -5,6 +5,7 @@ namespace App\Livewire\Admin;
 use App\Livewire\Admin\Concerns\HandlesTranslations;
 use App\Models\TeamMember;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -59,6 +60,7 @@ class TeamMemberForm extends Component
         $member->setTranslations('bio', $this->normalizeTranslations($this->form['bio']));
         $member->save();
 
+        Cache::forget('homepage.agents');
         session()->flash('status', 'Team member saved successfully.');
 
         return $this->redirectRoute('admin.team.index', navigate: true);

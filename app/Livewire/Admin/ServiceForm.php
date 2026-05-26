@@ -5,6 +5,7 @@ namespace App\Livewire\Admin;
 use App\Livewire\Admin\Concerns\HandlesTranslations;
 use App\Models\Service;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -61,6 +62,7 @@ class ServiceForm extends Component
         $service->setTranslations('description', $this->normalizeTranslations($this->form['description']));
         $service->save();
 
+        Cache::forget('homepage.services');
         session()->flash('status', 'Service saved successfully.');
 
         return $this->redirectRoute('admin.services.index', navigate: true);

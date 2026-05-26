@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin;
 
 use App\Models\BlogPost;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 
 class BlogPostsIndex extends Component
@@ -10,6 +11,7 @@ class BlogPostsIndex extends Component
     public function delete(int $id): void
     {
         BlogPost::findOrFail($id)->delete();
+        Cache::forget('homepage.posts');
         session()->flash('status', 'Blog post deleted successfully.');
     }
 
