@@ -9,7 +9,7 @@
                 @php $value = $section?->extraTrans("logos.{$index}") ?? $logo; @endphp
                 <div class="partner-item">
                     @if (filter_var($value, FILTER_VALIDATE_URL))
-                        <img src="{{ $value }}" alt="" class="max-h-10 w-auto object-contain">
+                        <img src="{{ $value }}" alt="" loading="lazy" class="max-h-10 w-auto object-contain">
                     @else
                         <span class="font-sans text-[13px] font-semibold uppercase tracking-wider text-muted">{{ $value }}</span>
                     @endif

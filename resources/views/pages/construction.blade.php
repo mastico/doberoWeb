@@ -1,4 +1,5 @@
 <x-layouts.app :title="__('Construction')" :description="__('Full and partial renovations, turnkey construction. Quality is not an option — it is a principle.')">
+<x-seo.faq-schema page="construction" />
 
     {{-- Header banner --}}
     <section class="bg-[#6b8fa8] pt-32 pb-12">

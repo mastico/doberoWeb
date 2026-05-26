@@ -173,3 +173,36 @@ if (! function_exists('switch_locale_url')) {
         return $url;
     }
 }
+
+
+if (! function_exists('linkify_locations')) {
+    /**
+     * Detect Costa Blanca location keywords in HTML and wrap the first occurrence
+     * of each with a link to the programmatic property landing page.
+     */
+    function linkify_locations(string $html, string $locale = 'en', string $type = 'property'): string
+    {
+        $locations = config('seo.locations', []);
+        $default = config('locales.default', 'en');
+
+        foreach ($locations as $keyword => $slug) {
+            $routeKey = $locale === $default ? 'property.landing.sale' : "{$locale}.property.landing.sale";
+
+            if (! app('router')->has($routeKey)) {
+                continue;
+            }
+
+            $url = route($routeKey, ['type' => $type, 'location' => $slug]);
+            $link = '<a href="'.e($url).'" class="text-dobero-blue hover:underline">'.e($keyword).'</a>';
+
+            $html = preg_replace(
+                '/(?<![>"\'])('.preg_quote($keyword, '/').')(?![^<]*<\/a>)/iu',
+                $link,
+                $html,
+                1
+            );
+        }
+
+        return $html;
+    }
+}

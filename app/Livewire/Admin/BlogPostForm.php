@@ -36,6 +36,8 @@ class BlogPostForm extends Component
             'author' => $this->post?->author ?? '',
             'published_at' => optional($this->post?->published_at)->format('Y-m-d\TH:i'),
             'is_published' => $this->post?->is_published ?? true,
+            'meta_title' => $this->post ? $this->fillTranslations($this->post->getTranslations('meta_title')) : $this->blankTranslations(),
+            'meta_description' => $this->post ? $this->fillTranslations($this->post->getTranslations('meta_description')) : $this->blankTranslations(),
         ];
     }
 
@@ -55,6 +57,8 @@ class BlogPostForm extends Component
             $rules["form.title.{$locale}"] = [$required, 'string', 'max:255'];
             $rules["form.excerpt.{$locale}"] = ['nullable', 'string'];
             $rules["form.content.{$locale}"] = [$required, 'string'];
+            $rules["form.meta_title.{$locale}"] = ['nullable', 'string', 'max:255'];
+            $rules["form.meta_description.{$locale}"] = ['nullable', 'string'];
         }
 
         $this->validate($rules);
@@ -66,10 +70,12 @@ class BlogPostForm extends Component
         $englishTitle = $this->form['title'][default_locale()] ?? '';
         $this->form['slug'] = filled($this->form['slug']) ? Str::slug($this->form['slug']) : Str::slug($englishTitle);
 
-        $post = BlogPost::updateOrCreate(['id' => $this->post?->id], Arr::except($this->form, ['title', 'excerpt', 'content']));
+        $post = BlogPost::updateOrCreate(['id' => $this->post?->id], Arr::except($this->form, ['title', 'excerpt', 'content', 'meta_title', 'meta_description']));
         $post->setTranslations('title', $this->normalizeTranslations($this->form['title']));
         $post->setTranslations('excerpt', $this->normalizeTranslations($this->form['excerpt']));
         $post->setTranslations('content', $this->normalizeTranslations($this->form['content']));
+        $post->setTranslations('meta_title', $this->normalizeTranslations($this->form['meta_title']));
+        $post->setTranslations('meta_description', $this->normalizeTranslations($this->form['meta_description']));
         $post->save();
 
         Cache::forget('homepage.posts');

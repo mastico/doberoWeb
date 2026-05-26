@@ -6,6 +6,7 @@ use App\Models\ContactInquiry;
 use App\Models\Property;
 use App\Models\PropertyReview;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 use Livewire\Component;
 
 class PropertyDetail extends Component
@@ -115,6 +116,11 @@ class PropertyDetail extends Component
 
     public function render()
     {
+        $metaDesc = $this->property->getTranslation('meta_description', app()->getLocale(), false)
+            ?: Str::limit(strip_tags((string) $this->property->description), 160);
+
+        $canonical = route('properties.show', ['slug' => $this->property->slug]);
+
         return view('livewire.property-detail', [
             'similarListings' => Property::whereKeyNot($this->property->id)
                 ->where('property_type', $this->property->property_type)
@@ -122,6 +128,10 @@ class PropertyDetail extends Component
                 ->take(4)
                 ->get(),
             'approvedReviews' => $this->property->approvedReviews()->latest()->get(),
-        ])->layout('components.layouts.app', ['title' => $this->property->title]);
+        ])->layout('components.layouts.app', [
+            'title' => $this->property->title,
+            'description' => $metaDesc,
+            'canonical' => $canonical,
+        ]);
     }
 }

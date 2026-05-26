@@ -593,4 +593,86 @@ npm ci && npm run build
 
 ---
 
+## SEO & AEO (Answer Engine Optimization)
+
+The site includes a comprehensive SEO/AEO implementation covering technical multilingual SEO, schema markup, programmatic landing pages, image optimization, and topical authority.
+
+### Meta Fields
+
+`properties`, `blog_posts`, and `services` tables each have `meta_title` and `meta_description` JSON columns (translatable via `HasTranslations`). Admin forms expose locale-tabbed inputs for all three locales. The layout falls back to `SiteSetting::get('seo_default_description')` if no per-page description is set.
+
+### Technical SEO
+
+- **Canonical URL**: every page emits `<link rel="canonical">`. `PropertyDetail` passes the exact localized property URL; `PropertiesListing` passes the clean base URL (strips query params).
+- **Hreflang**: `app.blade.php` emits `<link rel="alternate" hreflang="…">` for all three locales plus `x-default` on every page.
+- **Sitemap**: run `php artisan app:generate-sitemap` to produce `public/sitemap.xml`. Scheduled daily via `routes/console.php`. Covers all locales × (properties, blog posts, CMS pages, static routes).
+
+### Schema Markup (JSON-LD)
+
+All JSON-LD is rendered as `<script type="application/ld+json">` in the `<head>`.
+
+| Component | Injected in | Type |
+|---|---|---|
+| `<x-seo.organization />` | `app.blade.php` (global) | `Organization` + `RealEstateAgent` with `sameAs` (social + GBP) |
+| `<x-seo.property-schema :property="$property" />` | `property-detail.blade.php` | `SingleFamilyResidence` + `Offer` + `AggregateRating` (if ≥1 approved review) |
+| `<x-seo.faq-schema page="relocation" />` | `relocation.blade.php`, `construction.blade.php` | `FAQPage` (from `faq_items` table) |
+
+### FAQ Admin (`/admin/faqs`)
+
+Fully manageable FAQs per page via `FaqItemsIndex` / `FaqItemForm` Livewire components. Questions and answers are translatable (EN/ES/HU). Assign each item to a `page` key (`relocation`, `construction`, etc.) and it will be automatically included in the FAQPage schema for that page.
+
+### Programmatic Landing Pages
+
+SEO landing pages for property type × location combinations are served at:
+
+```
+/properties/{type}-for-sale-in-{location}
+/properties/{type}-for-rent-in-{location}
+```
+
+Examples: `/properties/villa-for-sale-in-torrevieja`, `/es/properties/villa-for-sale-in-alicante`
+
+These are handled by `PropertyLandingController` and query properties filtered by type + city. An optional intro paragraph can be added via `PageSectionsEditor` using the key `property_landing.{type}.{location}`.
+
+### Image Optimization
+
+Uploaded property images are automatically optimized on save via `spatie/laravel-image-optimizer`. The optimizer strips EXIF data and compresses JPEG/PNG files. Requires system tools to be installed:
+
+```bash
+# Debian/Ubuntu
+apt-get install jpegoptim optipng pngquant gifsicle webp
+```
+
+If the binaries are not installed, the error is silently caught and the original image is stored unmodified.
+
+### Lazy Loading
+
+All below-fold images (`loading="lazy"`) in: property gallery thumbnails, property listing cards, similar listings, agent photos, testimonial avatars, partner logos.
+
+### Property Slug — City + Type Append
+
+New properties auto-generate slugs as `{title}-{property_type}-{city}` (e.g., `sea-view-villa-villa-javea`). Existing slugs are never overwritten.
+
+### Internal Link Engine
+
+`linkify_locations(string $html, string $locale, string $type)` in `app/Support/helpers.php` detects Costa Blanca location keywords in HTML and wraps the first occurrence of each with a link to the programmatic landing page. Location list is configurable in `config/seo.php`. Apply in blog post detail views.
+
+### Global SEO Settings
+
+Add or update these keys in Site Settings (`/admin/settings`) under the **SEO & AEO** section:
+
+| Key | Description |
+|---|---|
+| `seo_default_title` | Site-wide fallback page title (translatable) |
+| `seo_default_description` | Site-wide fallback meta description (translatable) |
+| `gbp_url` | Google Business Profile URL (used in `Organization` schema `sameAs`) |
+
+### Off-Page Checklist (non-code)
+
+- Create a **Google Business Profile** with NAP matching `contact_address`, `contact_phone`, `contact_email` in Site Settings.
+- Register on **Páginas Amarillas** (ES), Hungarian expat directories, Costa Blanca forums. Link each to the corresponding locale homepage (e.g., `/hu`, `/es`).
+- Blog category taxonomy: use `legal`, `lifestyle`, `market-updates` as `category` values on `blog_posts` for topical authority silos.
+
+---
+
 *Built for DOBERO HOME CREATOR — Costa Blanca, Spain.*

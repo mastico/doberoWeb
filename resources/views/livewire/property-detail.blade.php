@@ -1,11 +1,12 @@
 @php $images = $property->images ?? []; @endphp
+<x-seo.property-schema :property="$property" />
 <div style="margin-top:68px">
 
     {{-- ── Hero image + price ───────────────────────────── --}}
     <section class="mx-auto max-w-7xl px-6 pb-4 lg:px-8">
         <div class="relative overflow-hidden">
             <img src="{{ image_url($images[0] ?? null) }}"
-                 alt="{{ $property->title }}"
+                 alt="{{ $property->title }}{{ $property->city ? ' — '.$property->city : '' }}"
                  class="h-[55vh] min-h-[360px] w-full object-cover">
             <div class="absolute inset-0 bg-gradient-to-t from-ink/50 to-transparent"></div>
 
@@ -33,7 +34,8 @@
             <div class="mt-2 flex gap-2 overflow-x-auto">
                 @foreach ($images as $img)
                     <img src="{{ image_url($img) }}"
-                         alt=""
+                         alt="{{ $property->title }} — image {{ $loop->iteration + 1 }}"
+                         loading="lazy"
                          class="h-20 w-28 shrink-0 object-cover opacity-80 hover:opacity-100 transition cursor-pointer">
                 @endforeach
             </div>
@@ -324,6 +326,7 @@
                             <div class="overflow-hidden">
                                 <img src="{{ image_url($img) }}"
                                      alt="{{ $listing->title }}"
+                                     loading="lazy"
                                      class="h-52 w-full object-cover transition duration-700 group-hover:scale-105">
                             </div>
                             <div class="p-5">

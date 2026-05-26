@@ -1,4 +1,5 @@
 <x-layouts.app :title="trans('relocation.title')" :description="trans('relocation.description')">
+<x-seo.faq-schema page="relocation" />
 
     {{-- Header banner --}}
     <section class="bg-[#6b8fa8] pt-32 pb-12">

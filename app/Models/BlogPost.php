@@ -11,7 +11,7 @@ class BlogPost extends Model
 {
     use HasTranslations;
 
-    public array $translatable = ['title', 'excerpt', 'content'];
+    public array $translatable = ['title', 'excerpt', 'content', 'meta_title', 'meta_description'];
 
     protected $fillable = [
         'title',
@@ -23,6 +23,8 @@ class BlogPost extends Model
         'author',
         'published_at',
         'is_published',
+        'meta_title',
+        'meta_description',
     ];
 
     protected function casts(): array

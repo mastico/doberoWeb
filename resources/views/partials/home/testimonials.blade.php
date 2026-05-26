@@ -13,6 +13,7 @@
                     <div class="flex items-center gap-4">
                         <img src="{{ $photo ?: asset('images/defaults/avatar-placeholder.jpg') }}"
                              alt="{{ $testimonial->author_name }}"
+                             loading="lazy"
                              class="h-12 w-12 rounded-full object-cover">
                         <div class="flex gap-0.5 text-yellow-400">
                             @for ($s = 0; $s < 5; $s++)

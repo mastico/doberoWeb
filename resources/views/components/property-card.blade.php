@@ -14,6 +14,7 @@
     <img
         src="{{ $image }}"
         alt="{{ $title }}"
+        loading="lazy"
         class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
     >
 

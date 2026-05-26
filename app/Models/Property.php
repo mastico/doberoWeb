@@ -12,7 +12,7 @@ class Property extends Model
 {
     use HasTranslations;
 
-    public array $translatable = ['title', 'description'];
+    public array $translatable = ['title', 'description', 'meta_title', 'meta_description'];
 
     protected $fillable = [
         'slug',
@@ -32,6 +32,8 @@ class Property extends Model
         'images',
         'is_featured',
         'property_id_ref',
+        'meta_title',
+        'meta_description',
     ];
 
     protected function casts(): array
@@ -48,7 +50,13 @@ class Property extends Model
     {
         static::saving(function (self $property): void {
             if (blank($property->slug)) {
-                $property->slug = Str::slug($property->getTranslation('title', config('locales.default', 'en'), true));
+                $title = $property->getTranslation('title', config('locales.default', 'en'), true);
+                $parts = array_filter([
+                    $title,
+                    $property->property_type,
+                    $property->city,
+                ]);
+                $property->slug = Str::slug(implode(' ', $parts));
             }
         });
     }

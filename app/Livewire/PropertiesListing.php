@@ -91,6 +91,9 @@ class PropertiesListing extends Component
             'properties' => $properties,
             'propertyTypes' => ['house', 'flat', 'villa', 'apartment', 'commercial', 'land'],
             'statuses' => ['for_sale', 'for_rent', 'sold', 'rented'],
-        ])->layout('components.layouts.app', ['title' => 'Properties']);
+        ])->layout('components.layouts.app', [
+            'title' => 'Properties',
+            'canonical' => route('properties.index'),
+        ]);
     }
 }

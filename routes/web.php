@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\PropertyLandingController;
 use App\Http\Middleware\SetLocale;
 use App\Livewire\Admin\BlogPostForm;
 use App\Livewire\Admin\BlogPostsIndex;
@@ -17,6 +18,8 @@ use App\Livewire\Admin\ServiceForm;
 use App\Livewire\Admin\ServicesIndex;
 use App\Livewire\Admin\SiteSettingsEditor;
 use App\Livewire\Admin\TranslationsEditor;
+use App\Livewire\Admin\FaqItemForm;
+use App\Livewire\Admin\FaqItemsIndex;
 use App\Livewire\Admin\UserForm;
 use App\Livewire\Admin\UsersIndex;
 use App\Livewire\Admin\TeamMemberForm;
@@ -53,6 +56,11 @@ $localizedRoutes = function (array $translations = []) use ($corePage): void {
     Route::get($t('about-us'), AboutPage::class)->name('about');
     Route::get($t('properties'), PropertiesListing::class)->name('properties.index');
     Route::get($t('properties').'/{slug}', PropertyDetail::class)->name('properties.show');
+    Route::get($t('properties').'/{type}-for-sale-in-{location}', [PropertyLandingController::class, 'show'])
+        ->name('property.landing.sale')
+        ->defaults('status', 'for_sale');
+    Route::get($t('properties').'/{type}-for-rent-in-{location}', fn ($type, $location) => app(PropertyLandingController::class)->show($type, $location, 'for_rent'))
+        ->name('property.landing.rent');
     Route::get($t('contact'), $corePage('contact', 'pages.contact'))->name('contact');
     Route::post($t('contact'), [ContactController::class, 'store'])->name('contact.store');
     Route::get($t('relocation'), $corePage('relocation', 'pages.relocation'))->name('relocation');
@@ -109,4 +117,7 @@ Route::prefix('admin')->middleware(['auth', 'verified'])->name('admin.')->group(
     Route::get('/users', UsersIndex::class)->name('users.index');
     Route::get('/users/create', UserForm::class)->name('users.create');
     Route::get('/users/{user}/edit', UserForm::class)->name('users.edit');
+    Route::get('/faqs', FaqItemsIndex::class)->name('faqs.index');
+    Route::get('/faqs/create', FaqItemForm::class)->name('faqs.create');
+    Route::get('/faqs/{faq}/edit', FaqItemForm::class)->name('faqs.edit');
 });

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Spatie\ImageOptimizer\OptimizerChainFactory;
 
 class PropertyForm extends Component
 {
@@ -45,6 +46,8 @@ class PropertyForm extends Component
             'sqm' => $this->property?->sqm ?? '',
             'is_featured' => $this->property?->is_featured ?? false,
             'property_id_ref' => $this->property?->property_id_ref ?? '',
+            'meta_title' => $this->property ? $this->fillTranslations($this->property->getTranslations('meta_title')) : $this->blankTranslations(),
+            'meta_description' => $this->property ? $this->fillTranslations($this->property->getTranslations('meta_description')) : $this->blankTranslations(),
         ];
         $this->existingImages = $this->property?->images ?? [];
     }
@@ -78,13 +81,24 @@ class PropertyForm extends Component
         foreach ($this->localeKeys() as $locale) {
             $rules["form.title.{$locale}"] = [$locale === default_locale() ? 'required' : 'nullable', 'string', 'max:255'];
             $rules["form.description.{$locale}"] = [$locale === default_locale() ? 'required' : 'nullable', 'string'];
+            $rules["form.meta_title.{$locale}"] = ['nullable', 'string', 'max:255'];
+            $rules["form.meta_description.{$locale}"] = ['nullable', 'string'];
         }
 
         $validated = $this->validate($rules);
 
         $images = $this->existingImages;
         foreach ($this->imageUploads as $upload) {
-            $images[] = $upload->store('properties', 'public');
+            $path = $upload->store('properties', 'public');
+            $fullPath = storage_path('app/public/'.$path);
+            if (file_exists($fullPath)) {
+                try {
+                    OptimizerChainFactory::create()->optimize($fullPath);
+                } catch (\Throwable) {
+                    // Optimization failed (missing binaries); continue without it
+                }
+            }
+            $images[] = $path;
         }
 
         $payload = Arr::except($validated['form'], ['title', 'description']);
@@ -95,6 +109,8 @@ class PropertyForm extends Component
         $property = Property::updateOrCreate(['id' => $this->property?->id], $payload);
         $property->setTranslations('title', $this->normalizeTranslations($this->form['title']));
         $property->setTranslations('description', $this->normalizeTranslations($this->form['description']));
+        $property->setTranslations('meta_title', $this->normalizeTranslations($this->form['meta_title']));
+        $property->setTranslations('meta_description', $this->normalizeTranslations($this->form['meta_description']));
         $property->save();
 
         Cache::forget("property.{$property->slug}");

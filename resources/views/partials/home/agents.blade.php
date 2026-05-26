@@ -18,6 +18,7 @@
                     <div class="mx-auto mb-5 h-24 w-24 overflow-hidden rounded-full border-2 border-[#dce0e0]">
                         <img src="{{ $photo ?: asset('images/defaults/avatar-placeholder.jpg') }}"
                              alt="{{ $agent->name }}"
+                             loading="lazy"
                              class="h-full w-full object-cover object-top">
                     </div>
                     <h3 class="font-sans text-[16px] font-semibold text-navy">{{ $agent->name }}</h3>

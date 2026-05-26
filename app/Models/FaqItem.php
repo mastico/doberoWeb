@@ -6,22 +6,18 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 
-class Service extends Model
+class FaqItem extends Model
 {
     use HasTranslations;
 
-    public array $translatable = ['title', 'description', 'meta_title', 'meta_description'];
+    public array $translatable = ['question', 'answer'];
 
     protected $fillable = [
-        'title',
-        'description',
-        'image',
-        'icon',
-        'category',
+        'page',
+        'question',
+        'answer',
         'sort_order',
         'is_active',
-        'meta_title',
-        'meta_description',
     ];
 
     protected function casts(): array
@@ -38,6 +34,11 @@ class Service extends Model
 
     public function scopeOrdered(Builder $query): Builder
     {
-        return $query->orderBy('sort_order')->latest('id');
+        return $query->orderBy('sort_order')->orderBy('id');
+    }
+
+    public function scopeForPage(Builder $query, string $page): Builder
+    {
+        return $query->where('page', $page);
     }
 }

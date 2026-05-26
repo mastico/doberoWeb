@@ -33,6 +33,8 @@ class ServiceForm extends Component
             'category' => $this->service?->category ?? '',
             'sort_order' => $this->service?->sort_order ?? 0,
             'is_active' => $this->service?->is_active ?? true,
+            'meta_title' => $this->service ? $this->fillTranslations($this->service->getTranslations('meta_title')) : $this->blankTranslations(),
+            'meta_description' => $this->service ? $this->fillTranslations($this->service->getTranslations('meta_description')) : $this->blankTranslations(),
         ];
     }
 
@@ -49,6 +51,8 @@ class ServiceForm extends Component
         foreach ($this->localeKeys() as $locale) {
             $rules["form.title.{$locale}"] = [$locale === default_locale() ? 'required' : 'nullable', 'string', 'max:255'];
             $rules["form.description.{$locale}"] = ['nullable', 'string'];
+            $rules["form.meta_title.{$locale}"] = ['nullable', 'string', 'max:255'];
+            $rules["form.meta_description.{$locale}"] = ['nullable', 'string'];
         }
 
         $this->validate($rules);
@@ -57,9 +61,11 @@ class ServiceForm extends Component
             $this->form['image'] = $this->imageUpload->store('services', 'public');
         }
 
-        $service = Service::updateOrCreate(['id' => $this->service?->id], Arr::except($this->form, ['title', 'description']));
+        $service = Service::updateOrCreate(['id' => $this->service?->id], Arr::except($this->form, ['title', 'description', 'meta_title', 'meta_description']));
         $service->setTranslations('title', $this->normalizeTranslations($this->form['title']));
         $service->setTranslations('description', $this->normalizeTranslations($this->form['description']));
+        $service->setTranslations('meta_title', $this->normalizeTranslations($this->form['meta_title']));
+        $service->setTranslations('meta_description', $this->normalizeTranslations($this->form['meta_description']));
         $service->save();
 
         Cache::forget('homepage.services');

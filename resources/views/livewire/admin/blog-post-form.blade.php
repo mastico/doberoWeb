@@ -14,6 +14,13 @@
         <div class="lg:col-span-2"><label class="form-label">Excerpt</label><textarea wire:model="form.excerpt.{{ $activeLocale }}" rows="3" class="form-input"></textarea></div>
         <div class="lg:col-span-2"><label class="form-label">Content</label><textarea wire:model="form.content.{{ $activeLocale }}" rows="8" class="form-input"></textarea></div>
         <div class="lg:col-span-2"><label class="form-label">Image</label><input type="file" wire:model="imageUpload" class="form-input"></div>
+        <div class="lg:col-span-2 border-t border-slate-200 pt-4">
+            <p class="mb-3 text-xs font-semibold uppercase tracking-widest text-slate-400">SEO</p>
+            <div class="grid gap-4 lg:grid-cols-2">
+                <div><label class="form-label">Meta Title</label><input wire:model="form.meta_title.{{ $activeLocale }}" class="form-input" placeholder="Override page title for search engines"></div>
+                <div><label class="form-label">Meta Description</label><textarea wire:model="form.meta_description.{{ $activeLocale }}" rows="2" class="form-input" placeholder="160-character summary for search results"></textarea></div>
+            </div>
+        </div>
         <div class="lg:col-span-2 flex gap-4"><button class="btn-primary">Save Blog Post</button><a href="{{ route('admin.blog.index') }}" class="rounded-full border border-slate-300 px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-slate-600">Cancel</a></div>
     </form>
 </div>
