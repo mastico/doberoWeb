@@ -186,7 +186,7 @@ resources/
     partials/
       home/                        # one file per homepage section:
         hero, mission, expertise, services-banner, investment,
-        featured-grid, agents, testimonials, partners, contact
+        agents, testimonials, partners, contact
       about/                       # one file per about section:
         header, intro, team, testimonials, services
     pages/                         # static Blade pages
@@ -271,7 +271,7 @@ SiteSetting::get('contact_phone', '+34 000 000 000');
 SiteSetting::set('contact_email', 'info@dobero.es');
 ```
 
-**Homepage section keys:** `hero`, `mission`, `expertise`, `services_banner`, `investment`, `contact`, `featured_grid`, `agents`, `testimonials`, `partners`
+**Homepage section keys:** `hero`, `mission`, `expertise`, `services_banner`, `investment`, `contact`, `agents`, `testimonials`, `partners`
 
 **About section keys:** `header`, `intro`, `team`, `services`, `blog`, `testimonials`
 
@@ -522,7 +522,7 @@ The file driver is preferred over `database` to avoid write-amplification on the
 ### Cache key design notes
 
 - `SiteSetting` cache keys include the locale (`site_setting.{key}.en`) because translatable settings resolve differently per locale.
-- `PageSection` models are cached whole (all locales in the JSON column); locale resolution happens at Blade render time via `$section->title`.
+- `PageSection` models are cached whole (all locales in the JSON column); locale resolution happens at Blade render time via `$section->title`. `getSection()` includes a self-healing guard: if a cached entry is ever an `__PHP_Incomplete_Class` (e.g. after a deploy with stale serialized objects), it is automatically evicted and re-fetched.
 - Homepage aggregate caches hold full Eloquent Collections; cleared as a unit when content changes.
 
 ### Invalidation helpers

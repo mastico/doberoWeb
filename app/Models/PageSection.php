@@ -38,13 +38,27 @@ class PageSection extends Model
             return null;
         }
 
-        return Cache::rememberForever("page_section.{$page}.{$sectionKey}", function () use ($page, $sectionKey) {
-            return static::query()
-                ->where('page', $page)
-                ->where('section_key', $sectionKey)
-                ->where('is_active', true)
-                ->first();
-        });
+        $key = "page_section.{$page}.{$sectionKey}";
+        $cached = Cache::get($key);
+
+        if ($cached !== null && ! ($cached instanceof static)) {
+            Cache::forget($key);
+            $cached = null;
+        }
+
+        if ($cached !== null) {
+            return $cached;
+        }
+
+        $value = static::query()
+            ->where('page', $page)
+            ->where('section_key', $sectionKey)
+            ->where('is_active', true)
+            ->first();
+
+        Cache::forever($key, $value);
+
+        return $value;
     }
 
     /** Forget the cached value for a specific section. */

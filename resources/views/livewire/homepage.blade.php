@@ -5,7 +5,6 @@
     @include('partials.home.services-banner', ['section' => $this->sections['services_banner']])
     @include('partials.home.investment', ['section' => $this->sections['investment']])
     @include('partials.home.contact', ['section' => $this->sections['contact']])
-    @include('partials.home.featured-grid', ['section' => $this->sections['featured_grid'], 'featuredProperties' => $featuredProperties])
     @include('partials.home.agents', ['section' => $this->sections['agents'], 'agents' => $agents])
     @include('partials.home.testimonials', ['section' => $this->sections['testimonials'], 'testimonials' => $testimonials])
     @include('partials.home.partners', ['section' => $this->sections['partners']])
