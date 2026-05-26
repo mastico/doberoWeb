@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "WebFetch(domain:dobero.es)",
+      "Bash(php artisan *)",
+      "Bash(curl -s https://dobero.es/)",
+      "Bash(curl -s https://dobero.es/property/)",
+      "Bash(curl -s https://dobero.es/wp-content/themes/houzez/css/all-css.css)",
+      "Bash(curl -s https://dobero.es/wp-content/themes/houzez/style.css)",
+      "Bash(curl -s -o /tmp/r.html -w \"HTTP %{http_code}\\\\n\" http://localhost:8123/)",
+      "Bash(curl -s -o /tmp/r-es.html -w \"HTTP %{http_code}\\\\n\" http://localhost:8123/es)",
+      "Bash(curl -s -o /tmp/r-es-about.html -w \"HTTP %{http_code}\\\\n\" http://localhost:8123/es/about)",
+      "Bash(curl -s -o /tmp/r-hu-contact.html -w \"HTTP %{http_code}\\\\n\" http://localhost:8123/hu/contact)",
+      "Bash(curl -s -o /tmp/r.html -w \"/ -> HTTP %{http_code}\\\\n\" http://localhost:8123/)",
+      "Bash(curl -s -o /tmp/r-es.html -w \"/es -> HTTP %{http_code}\\\\n\" http://localhost:8123/es)",
+      "Bash(curl -s -o /tmp/r-hu.html -w \"/hu -> HTTP %{http_code}\\\\n\" http://localhost:8123/hu)",
+      "Bash(curl -s -o /tmp/r-en-about.html -w \"/about -> HTTP %{http_code}\\\\n\" http://localhost:8123/about)",
+      "Bash(curl -s -o /tmp/r-en-contact.html -w \"/contact -> HTTP %{http_code}\\\\n\" http://localhost:8123/contact)",
+      "Bash(curl -s http://localhost:8123/about)",
+      "Bash(kill 842693)"
+    ]
+  }
+}
