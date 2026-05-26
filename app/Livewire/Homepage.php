@@ -28,21 +28,23 @@ class Homepage extends Component
 
     public function render()
     {
+        $ttl = now()->addHour();
+
         return view('livewire.homepage', [
             'featuredProperties' => $this->tableExists('properties')
-                ? Cache::rememberForever('homepage.featured', fn () => Property::featured()->latest()->take(9)->get())
+                ? Cache::remember('homepage.featured', $ttl, fn () => Property::featured()->latest()->take(9)->get())
                 : new Collection,
             'agents' => $this->tableExists('team_members')
-                ? Cache::rememberForever('homepage.agents', fn () => TeamMember::active()->ordered()->take(4)->get())
+                ? Cache::remember('homepage.agents', $ttl, fn () => TeamMember::active()->ordered()->take(4)->get())
                 : new Collection,
             'testimonials' => $this->tableExists('testimonials')
-                ? Cache::rememberForever('homepage.testimonials', fn () => Testimonial::active()->ordered()->take(3)->get())
+                ? Cache::remember('homepage.testimonials', $ttl, fn () => Testimonial::active()->ordered()->take(3)->get())
                 : new Collection,
             'services' => $this->tableExists('services')
-                ? Cache::rememberForever('homepage.services', fn () => Service::active()->ordered()->take(4)->get())
+                ? Cache::remember('homepage.services', $ttl, fn () => Service::active()->ordered()->take(4)->get())
                 : new Collection,
             'posts' => $this->tableExists('blog_posts')
-                ? Cache::rememberForever('homepage.posts', fn () => BlogPost::published()->latest('published_at')->take(4)->get())
+                ? Cache::remember('homepage.posts', $ttl, fn () => BlogPost::published()->latest('published_at')->take(4)->get())
                 : new Collection,
         ])->layout('components.layouts.app', ['title' => 'Home']);
     }
