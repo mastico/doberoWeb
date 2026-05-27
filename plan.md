@@ -578,3 +578,78 @@ One branch per phase, merged sequentially:
 - `feat/admin-page-builder` (Phase 4)
 
 Each branch should be reviewable in ~1 day of work. Phase 4 is the biggest; if it grows, split into 4a (Page model + dynamic routes, no translatable URLs) and 4b (translatable URL segments + slug-based redirects).
+
+---
+
+## Phase 5 — Property Import Integration
+
+> Enable doberoWebsite to receive property data written directly by doberoImport (and future import sources).  
+> This phase is a schema + model extension only — no admin UI changes are required beyond ensuring existing property admin works with the new fields.
+
+---
+
+### 5.1 Goals
+
+1. Store all Solvia fields that were previously only available in WordPress post-meta.
+2. Track which source each property came from and when it was last seen.
+3. Support future sources (e.g. Idealista) with source-specific metadata via a flexible `extra_data` JSON column.
+4. Invalidate stale properties: when a full sync no longer includes a property, set `status = 'sold'` and ensure it sorts to the bottom of listings.
+
+---
+
+### 5.2 New columns — `properties` table migration
+
+Write a migration `2026_XX_XX_add_import_fields_to_properties_table.php`:
+
+| Column | Type | Notes |
+|---|---|---|
+| `source` | `string` | e.g. `'solvia'`, `'idealista'` — which importer created this row |
+| `external_id` | `string` | importer-assigned key, e.g. `property-12345` |
+| `province` | `string, nullable` | Spanish provincia / region (Solvia field) |
+| `living_area` | `decimal(8,2), default 0` | Usable/living m² (Solvia `m2`) — distinct from `sqm` (total) |
+| `original_price` | `decimal(12,2), nullable` | Pre-discount price (Solvia `primerPrecioPublicacion`) |
+| `latitude` | `decimal(10,7), nullable` | GPS latitude |
+| `longitude` | `decimal(10,7), nullable` | GPS longitude |
+| `extra_data` | `json, nullable` | Source-specific fields that have no common column |
+| `source_synced_at` | `timestamp, nullable` | When importer last included this property in a sync |
+
+Add a unique index on `(source, external_id)` so `updateOrCreate` is idempotent.
+
+Also add `'sold'` status if not already present in the `status` enum (check existing migration; the original enum includes `sold` so this may already be covered).
+
+---
+
+### 5.3 Update `Property` model
+
+- Add all new columns to `$fillable`.
+- Add casts: `original_price => decimal:2`, `living_area => decimal:2`, `latitude => decimal:7`, `longitude => decimal:7`, `extra_data => array`, `source_synced_at => datetime`.
+- Add scope `scopeSold` returning records where `status = 'sold'`.
+- Update `scopeForSale` / `scopeForRent` to exclude `sold` records (if not already excluding).
+- Add scope `scopeOrderByStatus` that sorts `sold` last: `orderByRaw("CASE WHEN status = 'sold' THEN 1 ELSE 0 END ASC")`.
+
+---
+
+### 5.4 Listing page sort order
+
+Update the property listing query (wherever `Property::query()` is built for the public listing page) to chain `->scopeOrderByStatus()` or the raw `orderByRaw` expression so sold listings always appear at the bottom.
+
+---
+
+### 5.5 Translation cache sharing
+
+doberoImport's `translation_cache` table lives in its own app database. doberoWebsite should add a second DB connection (`importer`) in `config/database.php` pointing to the same MySQL database as doberoImport. The `TranslationCacheService` in doberoImport already reads/writes this table, so no changes are needed there — doberoWebsite simply does not duplicate translations.
+
+---
+
+### 5.6 Testing
+
+- Migration rolls up and down cleanly.
+- `Property::updateOrCreate(['source' => 'solvia', 'external_id' => 'property-1'], [...])` creates and then updates without duplicating.
+- Sold properties appear last on the listing page.
+
+---
+
+### Commit / branch
+
+Branch: `feat/property-import-schema`
+
