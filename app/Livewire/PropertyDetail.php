@@ -41,11 +41,13 @@ class PropertyDetail extends Component
 
     public function mount(string $slug): void
     {
-        $this->property = Cache::remember(
-            "property.{$slug}",
+        $id = Cache::remember(
+            "property.slug.{$slug}",
             now()->addMinutes(5),
-            fn () => Property::where('slug', $slug)->firstOrFail()
+            fn () => Property::where('slug', $slug)->firstOrFail()->id
         );
+
+        $this->property = Property::findOrFail($id);
     }
 
     public function submitTour(): void
