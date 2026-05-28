@@ -23,15 +23,24 @@ class Property extends Model
         'state_country',
         'postal_code',
         'price',
+        'original_price',
         'currency',
         'property_type',
         'status',
         'bedrooms',
         'bathrooms',
         'sqm',
+        'living_area',
         'images',
         'is_featured',
         'property_id_ref',
+        'source',
+        'external_id',
+        'province',
+        'latitude',
+        'longitude',
+        'extra_data',
+        'source_synced_at',
         'meta_title',
         'meta_description',
     ];
@@ -40,9 +49,15 @@ class Property extends Model
     {
         return [
             'images' => 'array',
+            'extra_data' => 'array',
             'price' => 'decimal:2',
+            'original_price' => 'decimal:2',
             'sqm' => 'decimal:2',
+            'living_area' => 'decimal:2',
+            'latitude' => 'decimal:7',
+            'longitude' => 'decimal:7',
             'is_featured' => 'boolean',
+            'source_synced_at' => 'datetime',
         ];
     }
 
@@ -89,5 +104,16 @@ class Property extends Model
     public function scopeForRent(Builder $query): Builder
     {
         return $query->where('status', 'for_rent');
+    }
+
+    public function scopeSold(Builder $query): Builder
+    {
+        return $query->where('status', 'sold');
+    }
+
+    /** Always sort sold/rented properties to the bottom of any result set. */
+    public function scopeOrderByStatus(Builder $query): Builder
+    {
+        return $query->orderByRaw("CASE WHEN status IN ('sold', 'rented') THEN 1 ELSE 0 END ASC");
     }
 }

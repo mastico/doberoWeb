@@ -74,12 +74,21 @@ class PageForm extends Component
             $validated['form']['key'] = $this->page->key;
         }
 
-        $page = Page::updateOrCreate(
-            ['id' => $this->page?->id],
-            Arr::except($validated['form'], ['slug', 'title', 'body', 'meta_title', 'meta_description']) + [
-                'published_at' => $validated['form']['is_published'] ? ($this->page?->published_at ?? now()) : null,
-            ]
-        );
+        $scalarFields = Arr::except($validated['form'], ['slug', 'title', 'body', 'meta_title', 'meta_description']) + [
+            'published_at' => $validated['form']['is_published'] ? ($this->page?->published_at ?? now()) : null,
+        ];
+
+        if ($this->page?->exists) {
+            $page = tap($this->page)->update($scalarFields);
+        } else {
+            // Supply empty JSON for NOT NULL translatable columns so the INSERT succeeds;
+            // actual translations are written by setTranslations below.
+            $page = Page::create($scalarFields + [
+                'slug' => '{}',
+                'title' => '{}',
+                'body' => '{}',
+            ]);
+        }
 
         $page->setTranslations('slug', $this->normalizeTranslations($this->form['slug']));
         $page->setTranslations('title', $this->normalizeTranslations($this->form['title']));

@@ -65,6 +65,7 @@ class PropertiesListing extends Component
     public function render()
     {
         $query = Property::query()
+            ->orderByStatus()
             ->when($this->keyword !== '', function ($query): void {
                 $query->where(function ($query): void {
                     $query->where('title', 'like', '%'.$this->keyword.'%')
