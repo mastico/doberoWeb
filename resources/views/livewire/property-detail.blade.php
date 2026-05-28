@@ -7,10 +7,11 @@
     x-data="{
         open: false,
         current: 0,
+        loading: false,
         images: @js(array_values(array_map(fn($img) => image_url($img), $images))),
-        prev() { this.current = (this.current - 1 + this.images.length) % this.images.length },
-        next() { this.current = (this.current + 1) % this.images.length },
-        show(i) { this.current = i; this.open = true }
+        prev() { this.loading = true; this.current = (this.current - 1 + this.images.length) % this.images.length },
+        next() { this.loading = true; this.current = (this.current + 1) % this.images.length },
+        show(i) { this.loading = true; this.current = i; this.open = true }
     }"
     @keydown.escape.window="open = false"
     @keydown.arrow-left.window="if(open) prev()"
@@ -407,9 +408,21 @@
     </button>
 
     {{-- Image --}}
-    <img :src="images[current]"
-         :alt="'{{ $property->title }} — photo ' + (current + 1)"
-         class="max-h-[88vh] max-w-[90vw] object-contain select-none">
+    <div class="relative flex items-center justify-center">
+        {{-- Spinner --}}
+        <div x-show="loading" class="absolute inset-0 flex items-center justify-center">
+            <svg class="h-10 w-10 animate-spin text-white/60" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/>
+            </svg>
+        </div>
+        <img :src="images[current]"
+             :alt="'{{ $property->title }} — photo ' + (current + 1)"
+             :class="loading ? 'opacity-0' : 'opacity-100'"
+             class="max-h-[88vh] max-w-[90vw] object-contain select-none transition-opacity duration-200"
+             @load="loading = false"
+             @error="loading = false">
+    </div>
 
     {{-- Next --}}
     <button @click="next"
