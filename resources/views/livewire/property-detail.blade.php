@@ -11,7 +11,14 @@
         images: @js(array_values(array_map(fn($img) => image_url($img), $images))),
         prev() { this.loading = true; this.current = (this.current - 1 + this.images.length) % this.images.length },
         next() { this.loading = true; this.current = (this.current + 1) % this.images.length },
-        show(i) { this.loading = true; this.current = i; this.open = true }
+        show(i) {
+            this.current = i;
+            this.open = true;
+            this.$nextTick(() => {
+                const img = this.$el.querySelector('.lightbox-img');
+                this.loading = img ? !img.complete : false;
+            });
+        }
     }"
     @keydown.escape.window="open = false"
     @keydown.arrow-left.window="if(open) prev()"
@@ -419,7 +426,7 @@
         <img :src="images[current]"
              :alt="'{{ $property->title }} — photo ' + (current + 1)"
              :class="loading ? 'opacity-0' : 'opacity-100'"
-             class="max-h-[88vh] max-w-[90vw] object-contain select-none transition-opacity duration-200"
+             class="lightbox-img max-h-[88vh] max-w-[90vw] object-contain select-none transition-opacity duration-200"
              x-on:load="loading = false"
              x-on:error="loading = false">
     </div>
