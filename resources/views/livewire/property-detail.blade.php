@@ -1,5 +1,22 @@
 @php $images = $property->images ?? []; @endphp
 <x-seo.property-schema :property="$property" />
+
+{{-- ── Gallery lightbox (Alpine) ───────────────────── --}}
+@if (count($images))
+<div
+    x-data="{
+        open: false,
+        current: 0,
+        images: @js(array_values(array_map(fn($img) => image_url($img), $images))),
+        prev() { this.current = (this.current - 1 + this.images.length) % this.images.length },
+        next() { this.current = (this.current + 1) % this.images.length },
+        show(i) { this.current = i; this.open = true }
+    }"
+    @keydown.escape.window="open = false"
+    @keydown.arrow-left.window="if(open) prev()"
+    @keydown.arrow-right.window="if(open) next()"
+>
+
 <div style="margin-top:68px">
 
     {{-- ── Hero image + price ───────────────────────────── --}}
@@ -7,35 +24,48 @@
         <div class="relative overflow-hidden">
             <img src="{{ image_url($images[0] ?? null) }}"
                  alt="{{ $property->title }}{{ $property->city ? ' — '.$property->city : '' }}"
-                 class="h-[55vh] min-h-[360px] w-full object-cover">
-            <div class="absolute inset-0 bg-gradient-to-t from-ink/50 to-transparent"></div>
+                 class="h-[55vh] min-h-[360px] w-full object-cover cursor-pointer"
+                 @click="show(0)">
+            <div class="absolute inset-0 bg-gradient-to-t from-ink/50 to-transparent pointer-events-none"></div>
 
             {{-- Bottom bar --}}
-            <div class="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-8">
+            <div class="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-8 pointer-events-none">
                 <div class="text-paper">
                     <p class="font-mono text-[10px] uppercase tracking-widest text-white/70">
                         {{ $property->address }}{{ $property->city ? ', '.$property->city : '' }}
                     </p>
                     <h1 class="mt-2 font-display text-3xl text-paper md:text-4xl">{{ $property->title }}</h1>
                 </div>
-                <div class="shrink-0 price-chip text-lg tnum">
+                <div class="shrink-0 price-chip text-lg tnum pointer-events-auto">
                     €{{ number_format($property->price, 0) }}
                 </div>
             </div>
 
             {{-- Status badge --}}
-            <div class="absolute left-6 top-6 status-chip">
+            <div class="absolute left-6 top-6 status-chip pointer-events-none">
                 {{ ucwords(str_replace('_', ' ', $property->status ?? 'For Sale')) }}
             </div>
+
+            {{-- View all photos button --}}
+            @if (count($images) > 1)
+            <button @click="show(0)"
+                    class="absolute bottom-6 right-6 flex items-center gap-2 bg-white/90 hover:bg-white px-4 py-2 text-xs font-mono uppercase tracking-widest text-ink shadow transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
+                </svg>
+                {{ __('View all') }} {{ count($images) }} {{ __('photos') }}
+            </button>
+            @endif
         </div>
 
         {{-- Thumbnail strip --}}
         @if (count($images) > 1)
             <div class="mt-2 flex gap-2 overflow-x-auto">
-                @foreach ($images as $img)
+                @foreach ($images as $i => $img)
                     <img src="{{ image_url($img) }}"
-                         alt="{{ $property->title }} — image {{ $loop->iteration + 1 }}"
+                         alt="{{ $property->title }} — image {{ $i + 1 }}"
                          loading="lazy"
+                         @click="show({{ $i }})"
                          class="h-20 w-28 shrink-0 object-cover opacity-80 hover:opacity-100 transition cursor-pointer">
                 @endforeach
             </div>
@@ -340,4 +370,66 @@
             </div>
         </section>
     @endif
+
+</div>{{-- end margin-top wrapper --}}
+
+{{-- ── Lightbox modal ───────────────────────────────── --}}
+<div x-show="open"
+     x-cloak
+     x-transition:enter="transition ease-out duration-200"
+     x-transition:enter-start="opacity-0"
+     x-transition:enter-end="opacity-100"
+     x-transition:leave="transition ease-in duration-150"
+     x-transition:leave-start="opacity-100"
+     x-transition:leave-end="opacity-0"
+     class="fixed inset-0 z-[999] flex items-center justify-center bg-black/90"
+     @click.self="open = false">
+
+    {{-- Close --}}
+    <button @click="open = false"
+            class="absolute right-5 top-5 text-white/70 hover:text-white transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+    </button>
+
+    {{-- Counter --}}
+    <div class="absolute left-5 top-5 font-mono text-xs uppercase tracking-widest text-white/60">
+        <span x-text="current + 1"></span> / <span x-text="images.length"></span>
+    </div>
+
+    {{-- Prev --}}
+    <button @click="prev"
+            class="absolute left-4 top-1/2 -translate-y-1/2 p-2 text-white/70 hover:text-white transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+        </svg>
+    </button>
+
+    {{-- Image --}}
+    <img :src="images[current]"
+         :alt="'{{ $property->title }} — photo ' + (current + 1)"
+         class="max-h-[88vh] max-w-[90vw] object-contain select-none">
+
+    {{-- Next --}}
+    <button @click="next"
+            class="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-white/70 hover:text-white transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+        </svg>
+    </button>
+
+    {{-- Dot strip --}}
+    @if (count($images) > 1)
+    <div class="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-2">
+        @foreach ($images as $i => $img)
+            <button @click="current = {{ $i }}"
+                    :class="{{ $i }} === current ? 'bg-white' : 'bg-white/30'"
+                    class="h-1.5 w-1.5 rounded-full transition-colors"></button>
+        @endforeach
+    </div>
+    @endif
 </div>
+
+</div>{{-- end Alpine x-data --}}
+@endif{{-- end if images --}}
