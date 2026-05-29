@@ -362,7 +362,7 @@
                 <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
                     @foreach ($similarListings as $listing)
                         @php $img = $listing->images[0] ?? '/images/defaults/property-placeholder.jpg'; @endphp
-                        <a href="{{ route('properties.show', ['id' => $listing->id]) }}" class="group border border-ink/10 bg-white">
+                        <a href="{{ route('properties.show', ['slug' => $listing->slug]) }}" class="group border border-ink/10 bg-white">
                             <div class="overflow-hidden">
                                 <img src="{{ image_url($img) }}"
                                      alt="{{ $listing->title }}"

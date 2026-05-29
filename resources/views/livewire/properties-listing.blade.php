@@ -125,7 +125,7 @@
                     <div class="flex flex-1 flex-col p-7">
                         <div class="flex items-start justify-between gap-4">
                             <div>
-                                <a href="{{ route('properties.show', ['id' => $property->id]) }}"
+                                <a href="{{ route('properties.show', ['slug' => $property->slug]) }}"
                                    class="font-display text-xl leading-snug text-ink transition hover:text-tide">
                                     {{ $property->title }}
                                 </a>
@@ -144,7 +144,7 @@
 
                         <div class="mt-auto flex items-center justify-between pt-6">
                             <div class="price-chip tnum">€{{ number_format($property->price, 0) }}</div>
-                            <a href="{{ route('properties.show', ['id' => $property->id]) }}" class="btn-primary text-xs py-2.5 px-5">
+                            <a href="{{ route('properties.show', ['slug' => $property->slug]) }}" class="btn-primary text-xs py-2.5 px-5">
                                 Details <span class="arrow">→</span>
                             </a>
                         </div>

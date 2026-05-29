@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\ContactInquiry;
 use App\Models\Property;
 use App\Models\PropertyReview;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Livewire\Component;
 
@@ -38,8 +39,14 @@ class PropertyDetail extends Component
         'message' => '',
     ];
 
-    public function mount(int $id): void
+    public function mount(string $slug): void
     {
+        $id = Cache::remember(
+            "property.slug.{$slug}",
+            now()->addMinutes(5),
+            fn () => Property::where('slug', $slug)->firstOrFail()->id
+        );
+
         $this->property = Property::findOrFail($id);
     }
 
@@ -114,7 +121,7 @@ class PropertyDetail extends Component
         $metaDesc = $this->property->getTranslation('meta_description', app()->getLocale(), false)
             ?: Str::limit(strip_tags((string) $this->property->description), 160);
 
-        $canonical = route('properties.show', ['id' => $this->property->id]);
+        $canonical = route('properties.show', ['slug' => $this->property->slug]);
 
         return view('livewire.property-detail', [
             'similarListings' => Property::whereKeyNot($this->property->id)

@@ -12,7 +12,7 @@ $schema = [
     '@type' => 'SingleFamilyResidence',
     'name' => $title,
     'description' => strip_tags((string) $description),
-    'url' => route('properties.show', ['id' => $property->id]),
+    'url' => route('properties.show', ['slug' => $property->slug]),
     'address' => [
         '@type' => 'PostalAddress',
         'addressLocality' => $property->city ?? 'Costa Blanca',
