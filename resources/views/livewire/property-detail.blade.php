@@ -37,16 +37,18 @@
             <div class="absolute inset-0 bg-gradient-to-t from-ink/50 to-transparent pointer-events-none"></div>
 
             {{-- Bottom bar --}}
-            <div class="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-8 pointer-events-none">
+            <div class="absolute inset-x-0 bottom-0 p-8 pointer-events-none">
                 <div class="text-paper">
                     <p class="font-mono text-[10px] uppercase tracking-widest text-white/70">
                         {{ $property->address }}{{ $property->city ? ', '.$property->city : '' }}
                     </p>
                     <h1 class="mt-2 font-display text-3xl text-paper md:text-4xl">{{ $property->title }}</h1>
                 </div>
-                <div class="shrink-0 price-chip text-lg tnum pointer-events-auto">
-                    €{{ number_format($property->price, 0) }}
-                </div>
+            </div>
+
+            {{-- Price — top right --}}
+            <div class="absolute right-6 top-6 price-chip text-2xl tnum pointer-events-none">
+                €{{ number_format($property->price, 0) }}
             </div>
 
             {{-- Status badge --}}
