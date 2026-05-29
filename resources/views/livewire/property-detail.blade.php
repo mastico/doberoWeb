@@ -38,16 +38,16 @@
 
             {{-- Bottom bar --}}
             <div class="absolute inset-x-0 bottom-0 p-8 pointer-events-none">
-                <div class="text-paper">
-                    <p class="font-mono text-[10px] uppercase tracking-widest text-white/70">
+                <div class="text-paper max-w-[calc(100%-11rem)]">
+                    <p class="font-mono text-[10px] uppercase tracking-widest text-white/70 truncate">
                         {{ $property->address }}{{ $property->city ? ', '.$property->city : '' }}
                     </p>
-                    <h1 class="mt-2 font-display text-3xl text-paper md:text-4xl">{{ $property->title }}</h1>
+                    <h1 class="mt-2 font-display text-3xl text-paper md:text-4xl line-clamp-2">{{ $property->title }}</h1>
                 </div>
             </div>
 
             {{-- Price — bottom right (swapped with view-all button) --}}
-            <div class="absolute right-6 bottom-6 price-chip text-2xl tnum pointer-events-none">
+            <div class="absolute right-6 bottom-6 z-10 price-chip text-2xl tnum pointer-events-none">
                 €{{ number_format($property->price, 0) }}
             </div>
 
