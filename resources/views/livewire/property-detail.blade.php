@@ -46,8 +46,8 @@
                 </div>
             </div>
 
-            {{-- Price — top right --}}
-            <div class="absolute right-6 top-6 price-chip text-2xl tnum pointer-events-none">
+            {{-- Price — bottom right (swapped with view-all button) --}}
+            <div class="absolute right-6 bottom-6 price-chip text-2xl tnum pointer-events-none">
                 €{{ number_format($property->price, 0) }}
             </div>
 
@@ -56,10 +56,10 @@
                 {{ ucwords(str_replace('_', ' ', $property->status ?? 'For Sale')) }}
             </div>
 
-            {{-- View all photos button --}}
+            {{-- View all photos button — top right (swapped with price) --}}
             @if (count($images) > 1)
             <button @click="show(0)"
-                    class="absolute bottom-6 right-6 flex items-center gap-2 bg-white/90 hover:bg-white px-4 py-2 text-xs font-mono uppercase tracking-widest text-ink shadow transition">
+                    class="absolute top-6 right-6 flex items-center gap-2 bg-white/90 hover:bg-white px-4 py-2 text-xs font-mono uppercase tracking-widest text-ink shadow transition">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
                 </svg>
