@@ -5,7 +5,6 @@ namespace App\Livewire;
 use App\Models\ContactInquiry;
 use App\Models\Property;
 use App\Models\PropertyReview;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Livewire\Component;
 
@@ -41,12 +40,9 @@ class PropertyDetail extends Component
 
     public function mount(string $slug): void
     {
-        $id = Cache::remember(
-            "property.slug.{$slug}",
-            now()->addMinutes(5),
-            fn () => Property::where('slug', $slug)->firstOrFail()->id
-        );
-
+        // Slug format: descriptive-text-{id}  — extract trailing integer as ID
+        $id = (int) Str::afterLast($slug, '-');
+        abort_if($id === 0, 404);
         $this->property = Property::findOrFail($id);
     }
 

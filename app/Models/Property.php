@@ -64,15 +64,21 @@ class Property extends Model
     protected static function booted(): void
     {
         static::saving(function (self $property): void {
-            if (blank($property->slug)) {
+            // Only generate slug base on creation (ID not yet available; finalised in created)
+            if (! $property->exists && blank($property->slug)) {
                 $title = $property->getTranslation('title', config('locales.default', 'en'), true);
-                $parts = array_filter([
-                    $title,
-                    $property->property_type,
-                    $property->city,
-                ]);
+                $parts = array_filter([$title, $property->property_type, $property->city]);
                 $property->slug = Str::slug(implode(' ', $parts));
             }
+        });
+
+        static::created(function (self $property): void {
+            // Append the real ID so URLs look like: apartments-costa-blanka-350
+            $base = $property->slug ?: Str::slug($property->getTranslation('title', config('locales.default', 'en'), true));
+            // Strip any trailing -<digits> or -<word>-<alphanumeric> from a previous import suffix
+            $base = preg_replace('/-[a-z0-9]+-[a-z0-9]+$|-[a-z0-9]{6,}$/', '', $base);
+            $property->slug = ltrim($base, '-').'-'.$property->id;
+            $property->saveQuietly();
         });
     }
 
