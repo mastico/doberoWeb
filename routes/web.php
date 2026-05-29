@@ -55,7 +55,7 @@ $localizedRoutes = function (array $translations = []) use ($corePage): void {
     Route::get('/', Homepage::class)->name('home');
     Route::get($t('about-us'), AboutPage::class)->name('about');
     Route::get($t('properties'), PropertiesListing::class)->name('properties.index');
-    Route::get($t('properties').'/{slug}', PropertyDetail::class)->name('properties.show');
+    Route::get($t('properties').'/{id}', PropertyDetail::class)->name('properties.show');
     Route::get($t('properties').'/{type}-for-sale-in-{location}', [PropertyLandingController::class, 'show'])
         ->name('property.landing.sale')
         ->defaults('status', 'for_sale');

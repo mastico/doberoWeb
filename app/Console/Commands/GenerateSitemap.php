@@ -41,9 +41,8 @@ class GenerateSitemap extends Command
         }
 
         // Properties
-        Property::whereNotNull('slug')->get()->each(function (Property $property) use ($sitemap, $locales, $defaultLocale) {
-            $slug = $property->slug;
-            $url = Url::create(route('properties.show', ['slug' => $slug]))
+        Property::all()->each(function (Property $property) use ($sitemap, $locales, $defaultLocale) {
+            $url = Url::create(route('properties.show', ['id' => $property->id]))
                 ->setLastModificationDate($property->updated_at)
                 ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
                 ->setPriority(0.8);
@@ -51,7 +50,7 @@ class GenerateSitemap extends Command
             foreach ($locales as $locale) {
                 $routeKey = $locale === $defaultLocale ? 'properties.show' : "{$locale}.properties.show";
                 if (app('router')->has($routeKey)) {
-                    $url->addAlternate(route($routeKey, ['slug' => $slug]), $locale);
+                    $url->addAlternate(route($routeKey, ['id' => $property->id]), $locale);
                 }
             }
 
