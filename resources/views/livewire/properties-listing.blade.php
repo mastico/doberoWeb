@@ -2,7 +2,7 @@
     {{-- Filter bar --}}
     <section class="bg-ink text-paper">
         <div class="mx-auto max-w-7xl px-6 py-8 lg:px-8">
-            <div class="grid gap-4 lg:grid-cols-[2fr_1fr_1fr_auto] lg:items-end">
+            <div class="grid gap-4 lg:grid-cols-[2fr_1fr_1fr_1fr_auto] lg:items-end">
                 <div>
                     <label class="form-label text-white/60">Keyword</label>
                     <input type="text" wire:model.live.debounce.300ms="keyword"
@@ -29,6 +29,18 @@
                         @endforeach
                     </select>
                 </div>
+                @if ($cities->isNotEmpty())
+                <div>
+                    <label class="form-label text-white/60">City</label>
+                    <select wire:model.live="city"
+                            class="w-full border-0 border-b border-white/20 bg-transparent px-0 py-3 text-sm text-white focus:border-brass-light focus:ring-0">
+                        <option value="">All Cities</option>
+                        @foreach ($cities as $c)
+                            <option value="{{ $c }}">{{ $c }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                @endif
                 <button type="button" wire:click="$toggle('showAdvanced')"
                         class="border border-brass/70 px-5 py-3 font-mono text-[10px] uppercase tracking-widest text-brass-light transition hover:bg-brass hover:text-ink whitespace-nowrap">
                     {{ $showAdvanced ? '− Less' : '+ More filters' }}

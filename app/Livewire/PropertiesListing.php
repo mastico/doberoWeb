@@ -20,6 +20,9 @@ class PropertiesListing extends Component
     #[Url(as: 'status')]
     public string $status = '';
 
+    #[Url(as: 'city')]
+    public string $city = '';
+
     #[Url(as: 'min')]
     public ?int $minPrice = null;
 
@@ -43,6 +46,11 @@ class PropertiesListing extends Component
     }
 
     public function updatingStatus(): void
+    {
+        $this->resetPage();
+    }
+
+    public function updatingCity(): void
     {
         $this->resetPage();
     }
@@ -76,6 +84,7 @@ class PropertiesListing extends Component
             })
             ->when($this->type !== '', fn ($query) => $query->where('property_type', $this->type))
             ->when($this->status !== '', fn ($query) => $query->where('status', $this->status))
+            ->when($this->city !== '', fn ($query) => $query->where('city', $this->city))
             ->when($this->minPrice, fn ($query) => $query->where('price', '>=', $this->minPrice))
             ->when($this->maxPrice, fn ($query) => $query->where('price', '<=', $this->maxPrice));
 
@@ -92,6 +101,7 @@ class PropertiesListing extends Component
             'properties' => $properties,
             'propertyTypes' => ['house', 'flat', 'villa', 'apartment', 'commercial', 'land'],
             'statuses' => ['for_sale', 'for_rent', 'sold', 'rented'],
+            'cities' => Property::query()->whereNotNull('city')->where('city', '!=', '')->distinct()->orderBy('city')->pluck('city'),
         ])->layout('components.layouts.app', [
             'title' => 'Properties',
             'canonical' => route('properties.index'),
