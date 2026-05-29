@@ -20,7 +20,7 @@ class RegeneratePropertySlugs extends Command
 
         foreach ($properties as $property) {
             $title = $property->getTranslation('title', config('locales.default', 'en'), true);
-            $parts = array_filter([$title, $property->property_type, $property->city]);
+            $parts = array_filter([$property->property_type, $property->city, $title]);
             $base = Str::slug(implode(' ', $parts));
             $property->slug = ltrim($base, '-').'-'.$property->id;
             $property->saveQuietly();

@@ -67,7 +67,7 @@ class Property extends Model
             // Only generate slug base on creation (ID not yet available; finalised in created)
             if (! $property->exists && blank($property->slug)) {
                 $title = $property->getTranslation('title', config('locales.default', 'en'), true);
-                $parts = array_filter([$title, $property->property_type, $property->city]);
+                $parts = array_filter([$property->property_type, $property->city, $title]);
                 $property->slug = Str::slug(implode(' ', $parts));
             }
         });
