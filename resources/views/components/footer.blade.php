@@ -1,7 +1,7 @@
 @php
     $year  = now()->year;
     $about = \App\Models\SiteSetting::get('footer_about',
-        'DOBERO HOME CREATOR combines property search, relocation support, construction guidance, and local expertise to help international buyers invest with confidence on the Costa Blanca.');
+        'DOBERO combines property search, relocation support, construction guidance, and local expertise to help international buyers invest with confidence on the Costa Blanca.');
 @endphp
 
 <footer class="bg-navy text-white">
@@ -11,9 +11,7 @@
             {{-- About Site --}}
             <div>
                 {{-- Logo --}}
-                <img src="{{ asset('images/logo-white.png') }}"
-                     alt="Dobero Home Creator"
-                     class="h-12 w-auto object-contain">
+                <img src="{{ asset('images/logo-white.png') }}" alt="DOBERO" class="h-12 w-auto object-contain">
                 <h3 class="mt-5 font-sans text-[18px] font-semibold text-white">{{ __('About Site') }}</h3>
                 <p class="mt-4 font-body text-[14px] font-light leading-7 text-white/65 max-w-sm">
                     {{ $about }}

@@ -53,10 +53,10 @@ return [
             'Inquiry Type',
             'General Inquiry',
             'Buying',
-            'Renting',
+            'Property management',
             'Message',
             "Let's Talk About Your Next Move",
-            'Share your goals and DOBERO HOME CREATOR will help you shortlist properties, assess opportunities, and plan the next steps.',
+            'Share your goals and DOBERO will help you shortlist properties, assess opportunities, and plan the next steps.',
         ],
 
         // ── Homepage partials ──────────────────────────────────────────────

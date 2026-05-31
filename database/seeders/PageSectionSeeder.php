@@ -36,8 +36,8 @@ class PageSectionSeeder extends Seeder
                     'stats' => [
                         ['icon' => 'nie', 'label' => ['en' => 'NIE Number', 'es' => 'Número NIE', 'hu' => 'NIE Szám'], 'value' => '50 EUR'],
                         ['icon' => 'mortgage', 'label' => ['en' => 'Mortgage Up To', 'es' => 'Hipoteca Hasta', 'hu' => 'Jelzálog Akár'], 'value' => '80%'],
-                        ['icon' => 'building', 'label' => ['en' => 'Building Pathology', 'es' => 'Patología de Edificios', 'hu' => 'Épületpatológia'], 'value' => '40+'],
-                        ['icon' => 'search', 'label' => ['en' => 'Finding Hidden Errors', 'es' => 'Encontrando Errores Ocultos', 'hu' => 'Rejtett Hibák Feltárása'], 'value' => '€0'],
+                        ['icon' => 'building', 'label' => ['en' => 'Building Pathology', 'es' => 'Patología de Edificios', 'hu' => 'Épületpatológia'], 'value' => '✅'],
+                        ['icon' => 'search', 'label' => ['en' => 'Finding Hidden Errors', 'es' => 'Encontrando Errores Ocultos', 'hu' => 'Rejtett Hibák Feltárása'], 'value' => '✅'],
                     ],
                 ],
                 'sort_order' => 2,
@@ -45,7 +45,7 @@ class PageSectionSeeder extends Seeder
             [
                 'page' => 'home',
                 'section_key' => 'expertise',
-                'title' => ['en' => 'Real Estate Expertise For Over 40 Years', 'es' => 'Experiencia Inmobiliaria Por Más de 40 Años', 'hu' => 'Több Mint 40 Éves Ingatlanpiaci Tapasztalat'],
+                'title' => ['en' => 'Real Estate Expertise For Over 15 Years', 'es' => 'Experiencia Inmobiliaria Por Más de 15 Años', 'hu' => 'Több Mint 15 Éves Ingatlanpiaci Tapasztalat'],
                 'content' => ['en' => 'We combine estate agency, relocation consulting, building pathology, financing guidance, and local market intelligence. That means fewer surprises and faster decisions for local and international buyers alike.', 'es' => 'Combinamos agencia inmobiliaria, consultoría de reubicación, patología de edificios, orientación financiera e inteligencia local de mercado.', 'hu' => 'Ötvözzük az ingatlanközvetítést, a költözési tanácsadást, az épületpatológiát és a finanszírozási útmutatást.'],
                 'extra' => [
                     'button_label' => ['en' => 'Learn More', 'es' => 'Saber Más', 'hu' => 'Tudjon Meg Többet'],
@@ -63,8 +63,8 @@ class PageSectionSeeder extends Seeder
                     'items' => [
                         ['icon' => 'home', 'title' => ['en' => 'Buy', 'es' => 'Comprar', 'hu' => 'Vásárlás'], 'caption' => ['en' => 'Curated listings', 'es' => 'Propiedades seleccionadas', 'hu' => 'Válogatott ajánlatok']],
                         ['icon' => 'tag', 'title' => ['en' => 'Sell', 'es' => 'Vender', 'hu' => 'Eladás'], 'caption' => ['en' => 'Valuation & match', 'es' => 'Valoración y encaje', 'hu' => 'Értékbecslés és párosítás']],
-                        ['icon' => 'key', 'title' => ['en' => 'Rent', 'es' => 'Alquilar', 'hu' => 'Bérlés'], 'caption' => ['en' => 'Long & short term', 'es' => 'Largo y corto plazo', 'hu' => 'Hosszú és rövid táv']],
-                        ['icon' => 'wrench', 'title' => ['en' => 'Build', 'es' => 'Construir', 'hu' => 'Építés'], 'caption' => ['en' => 'Construct & finish', 'es' => 'Construir y terminar', 'hu' => 'Kivitelezés és befejezés']],
+                        ['icon' => 'key', 'title' => ['en' => 'Property management', 'es' => 'Administración de propiedad', 'hu' => 'Ingatlan üzemeltetés'], 'caption' => ['en' => 'Long & short term', 'es' => 'Largo y corto plazo', 'hu' => 'Hosszú és rövid táv']],
+                        ['icon' => 'wrench', 'title' => ['en' => 'Refurbishment', 'es' => 'Reforma', 'hu' => 'Felújítás'], 'caption' => ['en' => 'Construct & finish', 'es' => 'Construir y terminar', 'hu' => 'Kivitelezés és befejezés']],
                     ],
                 ],
                 'sort_order' => 4,

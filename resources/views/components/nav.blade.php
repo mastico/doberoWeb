@@ -39,7 +39,7 @@
 
     <div class="houzez-container flex h-[68px] items-center justify-between">
         <a href="{{ route('home') }}" class="shrink-0">
-            <img src="{{ asset('images/logo-white.png') }}" alt="Dobero Home Creator" class="h-12 w-auto object-contain">
+            <img src="{{ asset('images/logo-white.png') }}" alt="DOBERO" class="h-12 w-auto object-contain">
         </a>
 
         <nav class="hidden items-center lg:flex">

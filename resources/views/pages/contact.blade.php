@@ -4,7 +4,7 @@
             <p class="section-kicker text-white/70">{{ __('CONTACT') }}</p>
             <h1 class="mt-3 text-5xl font-semibold">{{ $page?->title ?? __("Let's Talk About Your Next Move") }}</h1>
             <div class="mt-5 max-w-3xl text-lg text-white/75">
-                {!! $page?->body ?? '<p>' . __('Share your goals and DOBERO HOME CREATOR will help you shortlist properties, assess opportunities, and plan the next steps.') . '</p>' !!}
+                {!! $page?->body ?? '<p>' . __('Share your goals and DOBERO will help you shortlist properties, assess opportunities, and plan the next steps.') . '</p>' !!}
             </div>
         </div>
     </section>
@@ -34,7 +34,7 @@
                         <select name="inquiry_type" class="form-input">
                             <option value="">{{ __('General Inquiry') }}</option>
                             <option value="buy">{{ __('Buying') }}</option>
-                            <option value="rent">{{ __('Renting') }}</option>
+                            <option value="rent">{{ __('Property management') }}</option>
                             <option value="construction">{{ __('Construction') }}</option>
                             <option value="relocation">{{ __('Relocation') }}</option>
                         </select>
