@@ -29,6 +29,12 @@ class PropertiesListing extends Component
     #[Url(as: 'max')]
     public ?int $maxPrice = null;
 
+    #[Url(as: 'beds')]
+    public ?int $minBedrooms = null;
+
+    #[Url(as: 'baths')]
+    public ?int $minBathrooms = null;
+
     public bool $showAdvanced = false;
 
     public string $sort = 'latest';
@@ -65,6 +71,16 @@ class PropertiesListing extends Component
         $this->resetPage();
     }
 
+    public function updatingMinBedrooms(): void
+    {
+        $this->resetPage();
+    }
+
+    public function updatingMinBathrooms(): void
+    {
+        $this->resetPage();
+    }
+
     public function updatingSort(): void
     {
         $this->resetPage();
@@ -86,7 +102,9 @@ class PropertiesListing extends Component
             ->when($this->status !== '', fn ($query) => $query->where('status', $this->status))
             ->when($this->city !== '', fn ($query) => $query->where('city', $this->city))
             ->when($this->minPrice, fn ($query) => $query->where('price', '>=', $this->minPrice))
-            ->when($this->maxPrice, fn ($query) => $query->where('price', '<=', $this->maxPrice));
+            ->when($this->maxPrice, fn ($query) => $query->where('price', '<=', $this->maxPrice))
+            ->when($this->minBedrooms, fn ($query) => $query->where('bedrooms', '>=', $this->minBedrooms))
+            ->when($this->minBathrooms, fn ($query) => $query->where('bathrooms', '>=', $this->minBathrooms));
 
         $query = match ($this->sort) {
             'price_asc' => $query->orderBy('price'),
@@ -99,8 +117,8 @@ class PropertiesListing extends Component
 
         return view('livewire.properties-listing', [
             'properties' => $properties,
-            'propertyTypes' => ['house', 'flat', 'villa', 'apartment', 'commercial', 'land'],
-            'statuses' => ['for_sale', 'for_rent', 'sold', 'rented'],
+            'propertyTypes' => ['flat', 'studio', 'house', 'duplex', 'penthouse', 'bungalow', 'other'],
+            'statuses' => ['for_sale', 'sold'],
             'cities' => Property::query()->whereNotNull('city')->where('city', '!=', '')->distinct()->orderBy('city')->pluck('city'),
         ])->layout('components.layouts.app', [
             'title' => 'Properties',

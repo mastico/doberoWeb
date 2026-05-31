@@ -257,8 +257,12 @@ All catalogue models (`TeamMember`, `Testimonial`, `Service`, `BlogPost`) share:
 **Property model extras:**
 - Slug auto-generated from title on `saving` event
 - `images` cast to `array` (JSON column)
-- Scopes: `featured()`, `forSale()`, `forRent()`
+- Scopes: `featured()`, `forSale()`, `sold()`; `scopeOrderByStatus()` pushes sold to bottom
 - Relationships: `hasMany` ContactInquiry, `hasMany` PropertyReview
+
+**Property types:** `flat`, `studio`, `house`, `duplex`, `penthouse`, `bungalow`, `other`
+
+**Property statuses:** `for_sale`, `sold` (rental listings not supported)
 
 **Content retrieval:**
 ```php
@@ -295,7 +299,7 @@ $properties = Property::featured()->active()->get();
 | URL | Handler | Description |
 |---|---|---|
 | `/` | `Livewire\Homepage` | Full homepage with all sections |
-| `/properties` | `Livewire\PropertiesListing` | Filterable property grid/list |
+| `/properties` | `Livewire\PropertiesListing` | Filterable property grid/list (keyword, type, status, city; advanced: min/max price, min bedrooms, min bathrooms, sort, view mode) |
 | `/properties/{slug}` | `Livewire\PropertyDetail` | Property detail + gallery + enquiry |
 | `/about` | static Blade + Livewire | About us page |
 | `/contact` | static Blade + `Livewire\ContactForm` | Contact form (POST to `ContactController`) |
@@ -627,10 +631,9 @@ SEO landing pages for property type × location combinations are served at:
 
 ```
 /properties/{type}-for-sale-in-{location}
-/properties/{type}-for-rent-in-{location}
 ```
 
-Examples: `/properties/villa-for-sale-in-torrevieja`, `/es/properties/villa-for-sale-in-alicante`
+Examples: `/properties/house-for-sale-in-torrevieja`, `/es/properties/flat-for-sale-in-alicante`
 
 These are handled by `PropertyLandingController` and query properties filtered by type + city. An optional intro paragraph can be added via `PageSectionsEditor` using the key `property_landing.{type}.{location}`.
 

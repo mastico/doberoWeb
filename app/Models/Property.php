@@ -120,6 +120,6 @@ class Property extends Model
     /** Always sort sold/rented properties to the bottom of any result set. */
     public function scopeOrderByStatus(Builder $query): Builder
     {
-        return $query->orderByRaw("CASE WHEN status IN ('sold', 'rented') THEN 1 ELSE 0 END ASC");
+        return $query->orderByRaw("CASE WHEN status = 'sold' THEN 1 ELSE 0 END ASC");
     }
 }

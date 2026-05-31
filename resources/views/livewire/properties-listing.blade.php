@@ -48,7 +48,27 @@
             </div>
 
             @if ($showAdvanced)
-                <div class="mt-6 grid gap-4 border-t border-white/10 pt-6 md:grid-cols-2 lg:grid-cols-4">
+                <div class="mt-6 grid gap-4 border-t border-white/10 pt-6 md:grid-cols-3 lg:grid-cols-6">
+                    <div>
+                        <label class="form-label text-white/60">Min Bedrooms</label>
+                        <select wire:model.live="minBedrooms"
+                                class="w-full border-0 border-b border-white/20 bg-transparent px-0 py-3 text-sm text-white focus:border-brass-light focus:ring-0">
+                            <option value="">Any</option>
+                            @foreach ([1,2,3,4,5] as $n)
+                                <option value="{{ $n }}">{{ $n }}+</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div>
+                        <label class="form-label text-white/60">Min Bathrooms</label>
+                        <select wire:model.live="minBathrooms"
+                                class="w-full border-0 border-b border-white/20 bg-transparent px-0 py-3 text-sm text-white focus:border-brass-light focus:ring-0">
+                            <option value="">Any</option>
+                            @foreach ([1,2,3,4] as $n)
+                                <option value="{{ $n }}">{{ $n }}+</option>
+                            @endforeach
+                        </select>
+                    </div>
                     <div>
                         <label class="form-label text-white/60">Min Price €</label>
                         <input type="number" wire:model.live="minPrice"
