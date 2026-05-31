@@ -54,7 +54,7 @@ return [
             'Filing tax returns',
             'Obtaining a visa or residence permit',
         ],
-        'note' => 'The NIE is an essential document for any foreigner who wants to live, work, or carry out legal procedures in Spain. DOBERO can process your NIE within 24–48 hours.',
+        'note' => 'The NIE is an essential document for any foreigner who wants to live, work, or carry out legal procedures in Spain. DOBERO can process your NIE for 50 EUR.',
     ],
 
     'bank' => [

@@ -54,7 +54,7 @@ return [
             'Presentar declaraciones de impuestos',
             'Obtener un visado o permiso de residencia',
         ],
-        'note' => 'El NIE es un documento esencial para cualquier extranjero que quiera vivir, trabajar o realizar trámites legales en España. DOBERO puede gestionar su NIE en 24–48 horas.',
+        'note' => 'El NIE es un documento esencial para cualquier extranjero que quiera vivir, trabajar o realizar trámites legales en España. DOBERO puede gestionar su NIE por 50 EUR.',
     ],
 
     'bank' => [

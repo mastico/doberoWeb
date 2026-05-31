@@ -1,6 +1,6 @@
 @php
     $stats = data_get($section?->extra ?? [], 'stats', [
-        ['icon' => 'nie', 'label' => 'EXPRESS NIE NUMBER', 'value' => '24-48H'],
+        ['icon' => 'nie', 'label' => 'EXPRESS NIE NUMBER', 'value' => '50 EUR'],
         ['icon' => 'mortgage', 'label' => 'MORTGAGE UP TO', 'value' => '80%'],
         ['icon' => 'building', 'label' => 'BUILDING PATHOLOGY', 'value' => ''],
         ['icon' => 'search', 'label' => 'FINDING HIDDEN ERRORS', 'value' => ''],

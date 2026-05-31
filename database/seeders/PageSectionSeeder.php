@@ -34,7 +34,7 @@ class PageSectionSeeder extends Seeder
                 'title' => ['en' => 'Built on trust, insight, and action', 'es' => 'Construido sobre confianza, visión y acción', 'hu' => 'Bizalomra, meglátásra és cselekvésre építve'],
                 'extra' => [
                     'stats' => [
-                        ['icon' => 'nie', 'label' => ['en' => 'NIE Number', 'es' => 'Número NIE', 'hu' => 'NIE Szám'], 'value' => '24-48H'],
+                        ['icon' => 'nie', 'label' => ['en' => 'NIE Number', 'es' => 'Número NIE', 'hu' => 'NIE Szám'], 'value' => '50 EUR'],
                         ['icon' => 'mortgage', 'label' => ['en' => 'Mortgage Up To', 'es' => 'Hipoteca Hasta', 'hu' => 'Jelzálog Akár'], 'value' => '80%'],
                         ['icon' => 'building', 'label' => ['en' => 'Building Pathology', 'es' => 'Patología de Edificios', 'hu' => 'Épületpatológia'], 'value' => '40+'],
                         ['icon' => 'search', 'label' => ['en' => 'Finding Hidden Errors', 'es' => 'Encontrando Errores Ocultos', 'hu' => 'Rejtett Hibák Feltárása'], 'value' => '€0'],

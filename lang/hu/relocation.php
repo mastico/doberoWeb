@@ -54,7 +54,7 @@ return [
             'Adóbevallás benyújtása',
             'Vízum vagy tartózkodási engedély igénylése',
         ],
-        'note' => 'A NIE elengedhetetlen dokumentum minden külföldinek, aki élni, dolgozni vagy jogi ügyeket intézni szeretne Spanyolországban. A DOBERO 24–48 órán belül intézi az Ön NIE-jét.',
+        'note' => 'A NIE elengedhetetlen dokumentum minden külföldinek, aki élni, dolgozni vagy jogi ügyeket intézni szeretne Spanyolországban. A DOBERO 50 EUR-ért intézi az Ön NIE-jét.',
     ],
 
     'bank' => [
