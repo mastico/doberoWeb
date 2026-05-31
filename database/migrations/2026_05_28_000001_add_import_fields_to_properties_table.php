@@ -12,7 +12,7 @@ return new class extends Migration
             $table->string('source')->nullable()->after('property_id_ref');
             $table->string('external_id')->nullable()->after('source');
             $table->string('province')->nullable()->after('external_id');
-            $table->decimal('living_area', 8, 2)->default(0)->after('sqm');
+            $table->decimal('living_area', 12, 2)->default(0)->after('sqm');
             $table->decimal('original_price', 12, 2)->nullable()->after('price');
             $table->decimal('latitude', 10, 7)->nullable()->after('province');
             $table->decimal('longitude', 10, 7)->nullable()->after('latitude');

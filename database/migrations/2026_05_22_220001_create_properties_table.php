@@ -23,7 +23,7 @@ return new class extends Migration
             $table->enum('status', ['for_sale', 'for_rent', 'sold', 'rented'])->default('for_sale');
             $table->unsignedInteger('bedrooms')->default(0);
             $table->unsignedInteger('bathrooms')->default(0);
-            $table->decimal('sqm', 8, 2)->default(0);
+            $table->decimal('sqm', 12, 2)->default(0);
             $table->json('images')->nullable();
             $table->boolean('is_featured')->default(false);
             $table->string('property_id_ref')->nullable();
