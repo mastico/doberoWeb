@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Routing\UrlGenerator;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -20,6 +21,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Block migrate:fresh / migrate:refresh / db:wipe when connected to production MySQL.
+        DB::prohibitDestructiveCommands(
+            str_contains(config('database.connections.mysql.host', ''), 'digitalocean.com')
+        );
+
         $this->resolveLocalizedRouteNames();
     }
 
