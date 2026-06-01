@@ -22,7 +22,7 @@ $schema = [
         '@type' => 'Offer',
         'price' => $property->price,
         'priceCurrency' => 'EUR',
-        'availability' => in_array($property->status, ['for_sale', 'for_rent'])
+        'availability' => in_array($property->status, ['for_sale', 'for_rent', 'new'])
             ? 'https://schema.org/InStock'
             : 'https://schema.org/SoldOut',
     ],

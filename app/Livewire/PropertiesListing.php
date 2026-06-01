@@ -118,7 +118,7 @@ class PropertiesListing extends Component
         return view('livewire.properties-listing', [
             'properties' => $properties,
             'propertyTypes' => ['flat', 'studio', 'house', 'duplex', 'penthouse', 'bungalow', 'other'],
-            'statuses' => ['for_sale', 'sold'],
+            'statuses' => ['for_sale', 'for_rent', 'sold', 'rented', 'new'],
             'cities' => Property::query()->whereNotNull('city')->where('city', '!=', '')->distinct()->orderBy('city')->pluck('city'),
         ])->layout('components.layouts.app', [
             'title' => 'Properties',

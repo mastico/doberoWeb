@@ -69,7 +69,7 @@ class PropertyForm extends Component
             'form.price' => ['required', 'numeric'],
             'form.currency' => ['required', 'string', 'max:10'],
             'form.property_type' => ['required', 'in:flat,studio,house,duplex,penthouse,bungalow,other'],
-            'form.status' => ['required', 'in:for_sale,sold'],
+            'form.status' => ['required', 'in:for_sale,for_rent,sold,rented,new'],
             'form.bedrooms' => ['required', 'integer', 'min:0'],
             'form.bathrooms' => ['required', 'integer', 'min:0'],
             'form.sqm' => ['required', 'numeric', 'min:0'],
@@ -124,7 +124,7 @@ class PropertyForm extends Component
     {
         return view('livewire.admin.property-form', [
             'propertyTypes' => ['flat', 'studio', 'house', 'duplex', 'penthouse', 'bungalow', 'other'],
-            'statuses' => ['for_sale', 'sold'],
+            'statuses' => ['for_sale', 'for_rent', 'sold', 'rented', 'new'],
         ])->layout('components.layouts.admin', ['title' => $this->property ? 'Edit Property' : 'Create Property']);
     }
 }

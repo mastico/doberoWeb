@@ -108,4 +108,12 @@ class PropertyImportTest extends TestCase
         $this->assertSame(1, Property::sold()->count());
         $this->assertSame('Sold One', Property::sold()->first()->getTranslation('title', 'en'));
     }
+
+    public function test_property_status_accepts_new(): void
+    {
+        $property = $this->makeProperty(['title' => ['en' => 'New Listing'], 'status' => 'new']);
+
+        $this->assertSame('new', $property->status);
+        $this->assertSame('New Listing', $property->getTranslation('title', 'en'));
+    }
 }
