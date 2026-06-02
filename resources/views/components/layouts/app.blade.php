@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $title ? $title.' — ' : '' }}{{ \App\Models\SiteSetting::get('site_name', config('app.name')) }}</title>
     <meta name="description" content="{{ $description ?: \App\Models\SiteSetting::get('seo_default_description', \App\Models\SiteSetting::get('site_description', 'Curated Spanish real estate, relocation, and construction.')) }}">
     <link rel="canonical" href="{{ $canonical ?: url()->current() }}">

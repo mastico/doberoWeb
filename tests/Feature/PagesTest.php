@@ -168,4 +168,13 @@ class PagesTest extends TestCase
         // Deletable=false pages must keep their original key
         $this->assertSame('about', $page->key);
     }
+
+    public function test_admin_layout_exposes_csrf_token_for_livewire_uploads(): void
+    {
+        $this->actingAs(User::factory()->withPersonalTeam()->create());
+
+        $this->get('/admin/team/create')
+            ->assertOk()
+            ->assertSee('name="csrf-token"', false);
+    }
 }
