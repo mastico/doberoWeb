@@ -6,7 +6,7 @@
 ])
 
 <a
-    href="{{ url('/properties?type=' . strtolower($title)) }}"
+    href="{{ url('/properties?status=new&type=' . strtolower($title)) }}"
     class="group relative block overflow-hidden rounded-sm {{ $height }}"
 >
 
