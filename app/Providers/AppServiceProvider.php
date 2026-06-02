@@ -42,7 +42,7 @@ class AppServiceProvider extends ServiceProvider
 
         $original = UrlGenerator::class;
         $this->app->extend('url', function ($url, $app) {
-            return new class($app['router']->getRoutes(), $app['request'], $app['config']->get('app.asset_url')) extends UrlGenerator
+            $instance = new class($app['router']->getRoutes(), $app['request'], $app['config']->get('app.asset_url')) extends UrlGenerator
             {
                 public function route($name, $parameters = [], $absolute = true)
                 {
@@ -59,6 +59,18 @@ class AppServiceProvider extends ServiceProvider
                     return parent::route($name, $parameters, $absolute);
                 }
             };
+
+            // Preserve session and key resolvers so signed URLs work (required by Livewire uploads).
+            $instance->setSessionResolver(function () use ($app) {
+                return $app['session'] ?? null;
+            });
+
+            $instance->setKeyResolver(function () use ($app) {
+                $config = $app->make('config');
+                return [$config->get('app.key'), ...($config->get('app.previous_keys') ?? [])];
+            });
+
+            return $instance;
         });
     }
 }
