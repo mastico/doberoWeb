@@ -7,12 +7,12 @@
 @endphp
 @php
     $propertyTypes = [
-        ['title' => 'Studio',    'properties' => 4,   'image' => asset('images/defaults/investment-studio.jpg'), 'class' => 'lg:row-span-2'],
-        ['title' => 'Flat',      'properties' => 485, 'image' => asset('images/defaults/investment-flat.jpg'),   'class' => ''],
-        ['title' => 'Penthouse', 'properties' => 6,   'image' => asset('images/defaults/investment-flat.jpg'),   'class' => 'lg:row-span-2'],
-        ['title' => 'House',     'properties' => 72,  'image' => asset('images/defaults/investment-house.jpg'),  'class' => ''],
-        ['title' => 'Duplex',    'properties' => 13,  'image' => asset('images/defaults/investment-duplex.jpg'), 'class' => ''],
-        ['title' => 'Bungalow',  'properties' => 5,   'image' => asset('images/defaults/investment-studio.jpg'), 'class' => ''],
+        ['title' => 'Studio',    'properties' => \App\Models\Property::where(['property_type' => 'studio', 'status' => 'new'])->count(),   'image' => asset('images/defaults/investment-studio.jpg'), 'class' => 'lg:row-span-2'],
+        ['title' => 'Flat',      'properties' => \App\Models\Property::where(['property_type' => 'flat', 'status' => 'new'])->count(), 'image' => asset('images/defaults/investment-flat.jpg'),   'class' => ''],
+        ['title' => 'Penthouse', 'properties' => \App\Models\Property::where(['property_type' => 'penthouse', 'status' => 'new'])->count(),   'image' => asset('images/defaults/investment-penthouse.jpg'),   'class' => 'lg:row-span-2'],
+        ['title' => 'House',     'properties' => \App\Models\Property::where(['property_type' => 'house', 'status' => 'new'])->count(),  'image' => asset('images/defaults/investment-house.jpg'),  'class' => ''],
+        ['title' => 'Duplex',    'properties' => \App\Models\Property::where(['property_type' => 'duplex', 'status' => 'new'])->count(),  'image' => asset('images/defaults/investment-duplex.jpg'), 'class' => ''],
+        ['title' => 'Bungalow',  'properties' => \App\Models\Property::where(['property_type' => 'bungalow', 'status' => 'new'])->count(),   'image' => asset('images/defaults/investment-bungalow.jpg'), 'class' => ''],
     ];
 @endphp
 @if($section?->is_active)
@@ -48,7 +48,7 @@
                     {{-- Flat --}}
                     <x-property-card
                         :title="__('Flat')"
-                        properties="485"
+                        properties="{{ $propertyTypes[1]['properties'] }}"
                         image="{{ $propertyTypes[1]['image'] }}"
                         height="h-[280px]"
                     />
@@ -56,7 +56,7 @@
                     {{-- Studio --}}
                     <x-property-card
                         :title="__('Studio')"
-                        properties="4"
+                        properties="{{ $propertyTypes[0]['properties'] }}"
                         image="{{ $propertyTypes[0]['image'] }}"
                         height="h-[560px]"
                     />
@@ -69,7 +69,7 @@
                     {{-- House --}}
                     <x-property-card
                         :title="__('House')"
-                        properties="72"
+                        properties="{{ $propertyTypes[3]['properties'] }}"
                         image="{{ $propertyTypes[3]['image'] }}"
                         height="h-[280px]"
                     />
@@ -77,7 +77,7 @@
                     {{-- Duplex --}}
                     <x-property-card
                         :title="__('Duplex')"
-                        properties="13"
+                        properties="{{ $propertyTypes[4]['properties'] }}"
                         image="{{ $propertyTypes[4]['image'] }}"
                         height="h-[280px]"
                     />
@@ -90,7 +90,7 @@
                     {{-- Penthouse --}}
                     <x-property-card
                         :title="__('Penthouse')"
-                        properties="6"
+                        properties="{{ $propertyTypes[2]['properties'] }}"
                         image="{{ $propertyTypes[2]['image'] }}"
                         height="h-[560px]"
                     />
@@ -98,7 +98,7 @@
                     {{-- Bungalow --}}
                     <x-property-card
                         :title="__('Bungalow')"
-                        properties="5"
+                        properties="{{ $propertyTypes[5]['properties'] }}"
                         image="{{ $propertyTypes[5]['image'] }}"
                         height="h-[220px]"
                     />
