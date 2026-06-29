@@ -13,8 +13,6 @@ class NavItemForm extends Component
 
     public ?NavItem $item = null;
 
-    public string $activeLocale = 'en';
-
     public array $form = [
         'parent_id' => null,
         'location' => 'primary',

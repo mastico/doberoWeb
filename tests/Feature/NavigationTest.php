@@ -128,7 +128,7 @@ class NavigationTest extends TestCase
         $this->assertFalse($item->fresh()->is_active);
     }
 
-    public function test_nav_item_form_preserves_other_locale_values_when_editing(): void
+    public function test_nav_item_form_saves_all_locale_values_together(): void
     {
         $this->actingAs(User::factory()->withPersonalTeam()->create());
 
@@ -141,18 +141,22 @@ class NavigationTest extends TestCase
         ]);
 
         Livewire::test(NavItemForm::class, ['item' => $item])
+            ->set('form.label.en', 'About Us Updated')
             ->set('form.label.es', 'Acerca de Nosotros')
+            ->set('form.label.hu', 'Rólunk Frissítve')
+            ->set('form.url.en', '/about-us-updated')
             ->set('form.url.es', '/es/acerca-de-nosotros')
+            ->set('form.url.hu', '/hu/rolunk-frissitve')
             ->call('save');
 
         $item->refresh();
 
-        $this->assertSame('About Us', $item->getTranslation('label', 'en'));
+        $this->assertSame('About Us Updated', $item->getTranslation('label', 'en'));
         $this->assertSame('Acerca de Nosotros', $item->getTranslation('label', 'es'));
-        $this->assertSame('Rólunk', $item->getTranslation('label', 'hu'));
-        $this->assertSame('/about-us', $item->getTranslation('url', 'en'));
+        $this->assertSame('Rólunk Frissítve', $item->getTranslation('label', 'hu'));
+        $this->assertSame('/about-us-updated', $item->getTranslation('url', 'en'));
         $this->assertSame('/es/acerca-de-nosotros', $item->getTranslation('url', 'es'));
-        $this->assertSame('/hu/rolunk', $item->getTranslation('url', 'hu'));
+        $this->assertSame('/hu/rolunk-frissitve', $item->getTranslation('url', 'hu'));
     }
 
     public function test_inactive_nav_items_are_excluded_from_public_nav(): void
