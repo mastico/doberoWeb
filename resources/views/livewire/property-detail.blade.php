@@ -121,6 +121,7 @@
                     <dl class="mt-6 grid gap-px bg-ink/10 sm:grid-cols-2">
                         @foreach ([
                             'Property ID' => $property->property_id_ref ?: 'N/A',
+                            'External ID' => $property->external_id ?: 'N/A',
                             'Price'        => '€'.number_format($property->price, 0),
                             'Bedrooms'     => $property->bedrooms,
                             'Bathrooms'    => $property->bathrooms,
