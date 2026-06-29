@@ -12,7 +12,7 @@
                 <div>
                     <label class="form-label text-white/60">Type</label>
                     <select wire:model.live="type"
-                            class="w-full border-0 border-b border-white/20 bg-transparent px-0 py-3 text-sm text-white focus:border-brass-light focus:ring-0">
+                        class="property-filter-select">
                         <option value="">All Types</option>
                         @foreach ($propertyTypes as $option)
                             <option value="{{ $option }}">{{ ucfirst($option) }}</option>
@@ -22,7 +22,7 @@
                 <div>
                     <label class="form-label text-white/60">Status</label>
                     <select wire:model.live="status"
-                            class="w-full border-0 border-b border-white/20 bg-transparent px-0 py-3 text-sm text-white focus:border-brass-light focus:ring-0">
+                        class="property-filter-select">
                         <option value="">Any Status</option>
                         @foreach ($statuses as $option)
                             <option value="{{ $option }}">{{ ucwords(str_replace('_', ' ', $option)) }}</option>
@@ -33,7 +33,7 @@
                 <div>
                     <label class="form-label text-white/60">City</label>
                     <select wire:model.live="city"
-                            class="w-full border-0 border-b border-white/20 bg-transparent px-0 py-3 text-sm text-white focus:border-brass-light focus:ring-0">
+                            class="property-filter-select">
                         <option value="">All Cities</option>
                         @foreach ($cities as $c)
                             <option value="{{ $c }}">{{ $c }}</option>
@@ -52,7 +52,7 @@
                     <div>
                         <label class="form-label text-white/60">Min Bedrooms</label>
                         <select wire:model.live="minBedrooms"
-                                class="w-full border-0 border-b border-white/20 bg-transparent px-0 py-3 text-sm text-white focus:border-brass-light focus:ring-0">
+                                class="property-filter-select">
                             <option value="">Any</option>
                             @foreach ([1,2,3,4,5] as $n)
                                 <option value="{{ $n }}">{{ $n }}+</option>
@@ -62,7 +62,7 @@
                     <div>
                         <label class="form-label text-white/60">Min Bathrooms</label>
                         <select wire:model.live="minBathrooms"
-                                class="w-full border-0 border-b border-white/20 bg-transparent px-0 py-3 text-sm text-white focus:border-brass-light focus:ring-0">
+                                class="property-filter-select">
                             <option value="">Any</option>
                             @foreach ([1,2,3,4] as $n)
                                 <option value="{{ $n }}">{{ $n }}+</option>
@@ -82,7 +82,7 @@
                     <div>
                         <label class="form-label text-white/60">Sort By</label>
                         <select wire:model.live="sort"
-                                class="w-full border-0 border-b border-white/20 bg-transparent px-0 py-3 text-sm text-white focus:border-brass-light focus:ring-0">
+                                class="property-filter-select">
                             <option value="latest">Latest</option>
                             <option value="oldest">Oldest</option>
                             <option value="price_asc">Price: Low → High</option>

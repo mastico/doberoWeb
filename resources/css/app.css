@@ -145,6 +145,13 @@
                rounded-sm transition-colors duration-150
                focus:border-primary focus:ring-1 focus:ring-primary/30;
     }
+    .property-filter-select {
+        @apply w-full appearance-none border-0 border-b border-white/20 bg-white px-0 py-3 pr-10 text-sm text-body focus:border-brass-light focus:ring-0;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+        background-position: right 0.1rem center;
+        background-repeat: no-repeat;
+        background-size: 1rem 1rem;
+    }
     .form-error {
         @apply mt-1 font-sans text-[12px] text-rose-600;
     }
