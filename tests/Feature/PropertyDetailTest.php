@@ -39,7 +39,7 @@ class PropertyDetailTest extends TestCase
         $this->get('/properties/'.$property->slug)
             ->assertOk()
             ->assertSee('Property ID')
-            ->assertSee('DOB-2001')
+            ->assertDontSee('DOB-2001')
             ->assertSee('EXT-9001');
     }
 }

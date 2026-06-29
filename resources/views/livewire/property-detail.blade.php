@@ -134,10 +134,7 @@
                         <div class="flex items-start justify-between bg-white px-5 py-4">
                             <dt class="font-mono text-[10px] uppercase tracking-widest text-ink/50">Property ID</dt>
                             <dd class="text-right">
-                                <div class="font-display text-base text-ink tnum">{{ $property->property_id_ref ?: 'N/A' }}</div>
-                                @if ($property->external_id)
-                                    <div class="mt-1 font-mono text-[10px] uppercase tracking-widest text-ink/40">{{ $property->external_id }}</div>
-                                @endif
+                                <div class="font-display text-base text-ink tnum">{{ $property->external_id }}</div>
                             </dd>
                         </div>
                     </dl>
