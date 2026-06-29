@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature;
 
 use App\Livewire\Admin\NavBuilder;
+use App\Livewire\Admin\NavItemForm;
 use App\Models\NavItem;
 use App\Models\User;
 use Database\Seeders\DatabaseSeeder;
@@ -125,6 +126,33 @@ class NavigationTest extends TestCase
             ->call('toggleActive', $item->id);
 
         $this->assertFalse($item->fresh()->is_active);
+    }
+
+    public function test_nav_item_form_preserves_other_locale_values_when_editing(): void
+    {
+        $this->actingAs(User::factory()->withPersonalTeam()->create());
+
+        $item = NavItem::create([
+            'label' => ['en' => 'About Us', 'es' => 'Sobre Nosotros', 'hu' => 'Rólunk'],
+            'url' => ['en' => '/about-us', 'es' => '/es/sobre-nosotros', 'hu' => '/hu/rolunk'],
+            'sort_order' => 1,
+            'location' => 'primary',
+            'is_active' => true,
+        ]);
+
+        Livewire::test(NavItemForm::class, ['item' => $item])
+            ->set('form.label.es', 'Acerca de Nosotros')
+            ->set('form.url.es', '/es/acerca-de-nosotros')
+            ->call('save');
+
+        $item->refresh();
+
+        $this->assertSame('About Us', $item->getTranslation('label', 'en'));
+        $this->assertSame('Acerca de Nosotros', $item->getTranslation('label', 'es'));
+        $this->assertSame('Rólunk', $item->getTranslation('label', 'hu'));
+        $this->assertSame('/about-us', $item->getTranslation('url', 'en'));
+        $this->assertSame('/es/acerca-de-nosotros', $item->getTranslation('url', 'es'));
+        $this->assertSame('/hu/rolunk', $item->getTranslation('url', 'hu'));
     }
 
     public function test_inactive_nav_items_are_excluded_from_public_nav(): void

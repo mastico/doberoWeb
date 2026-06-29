@@ -6,8 +6,8 @@
     </div>
 
     <form wire:submit="save" class="grid gap-6 lg:grid-cols-2">
-        <div><label class="form-label">Label</label><input wire:model="form.label.{{ $activeLocale }}" class="form-input"></div>
-        <div><label class="form-label">URL</label><input wire:model="form.url.{{ $activeLocale }}" class="form-input"></div>
+        <div wire:key="nav-item-label-{{ $activeLocale }}"><label class="form-label">Label</label><input wire:model="form.label.{{ $activeLocale }}" class="form-input"></div>
+        <div wire:key="nav-item-url-{{ $activeLocale }}"><label class="form-label">URL</label><input wire:model="form.url.{{ $activeLocale }}" class="form-input"></div>
         <div><label class="form-label">Parent Item</label><select wire:model="form.parent_id" class="form-input"><option value="">None</option>@foreach ($rootItems as $root)<option value="{{ $root->id }}">{{ $root->getTranslation('label', 'en', false) }}</option>@endforeach</select></div>
         <div><label class="form-label">Location</label><select wire:model="form.location" class="form-input"><option value="primary">Primary</option><option value="footer">Footer</option></select></div>
         <div><label class="form-label">Sort Order</label><input type="number" wire:model="form.sort_order" class="form-input"></div>
