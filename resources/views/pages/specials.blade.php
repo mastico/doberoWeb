@@ -19,7 +19,7 @@
                     class="hidden lg:block w-56 shrink-0 sticky top-24 self-start max-h-[calc(100vh-7rem)] overflow-y-auto"
                     x-data="{
                         active: 'assessment',
-                        sections: ['assessment','hidden-defects','waterproofing','forensics'],
+                        sections: ['assessment','hidden-defects','waterproofing','forensics','residency-assistance','technical-property-inspection','real-estate-brokerage','mortgage-assistance','renovation-remodeling','electrical-compliance','thermal-acoustic-insulation','project-management','building-rehabilitation','rope-access-vertical-works','hidden-defect-inspection','building-pathology','expert-witness-legal','energy-performance-certificate','solar-panel-installation','terrace-enclosure'],
                         onScroll() {
                             const offset = 160;
                             let current = this.sections[0];
@@ -42,6 +42,22 @@
                             ['hidden-defects',__('Discovery of Hidden Defects')],
                             ['waterproofing', __('Waterproofing Solutions')],
                             ['forensics',     __('Forensic Expert Support')],
+                            ['residency-assistance',      __('Residency Assistance (Costa Blanca)')],
+                            ['technical-property-inspection', __('Technical Property Inspection')],
+                            ['real-estate-brokerage',     __('Real Estate Brokerage')],
+                            ['mortgage-assistance',       __('Mortgage Assistance')],
+                            ['renovation-remodeling',     __('Renovation and Remodeling')],
+                            ['electrical-compliance',     __('Electrical Compliance Certificate (Boletín)')],
+                            ['thermal-acoustic-insulation', __('Thermal and Acoustic Insulation')],
+                            ['project-management',        __('Project Management')],
+                            ['building-rehabilitation',   __('Building Rehabilitation')],
+                            ['rope-access-vertical-works', __('Rope Access / Vertical Works')],
+                            ['hidden-defect-inspection',  __('Hidden Defect Inspection')],
+                            ['building-pathology',        __('Building Pathology')],
+                            ['expert-witness-legal',      __('Expert Witness and Technical Support for Legal Proceedings')],
+                            ['energy-performance-certificate', __('Energy Performance Certificate (EPC)')],
+                            ['solar-panel-installation',  __('Solar Panel System Installation')],
+                            ['terrace-enclosure',         __('Terrace Enclosure (with Aluminium Frames and Sandwich Panels)')],
                         ] as [$id, $label])
                             <a href="#{{ $id }}"
                                :class="active === '{{ $id }}'
