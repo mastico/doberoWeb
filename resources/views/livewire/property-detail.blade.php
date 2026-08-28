@@ -112,7 +112,7 @@
                 {{-- Description --}}
                 <div class="border border-ink/10 bg-white p-8">
                     <h2 class="font-display text-2xl text-ink">Description</h2>
-                    <p class="mt-5 text-sm leading-8 text-ink/75">{{ $property->description }}</p>
+                    <div class="mt-5 text-sm leading-8 text-ink/75">{!! nl2br(e($property->description)) !!}</div>
                 </div>
 
                 {{-- Details --}}
@@ -431,6 +431,7 @@
             </svg>
         </div>
         <img :src="images[current]"
+             alt="Property photo"
              :alt="'{{ $property->title }} — photo ' + (current + 1)"
              :class="loading ? 'opacity-0' : 'opacity-100'"
              class="lightbox-img max-h-[88vh] max-w-[90vw] object-contain select-none transition-opacity duration-200"
