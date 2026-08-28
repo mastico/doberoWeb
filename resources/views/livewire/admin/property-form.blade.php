@@ -96,16 +96,36 @@
             @error('form.property_id_ref')<p class="form-error">{{ $message }}</p>@enderror
         </div>
         <div class="lg:col-span-2 flex items-center gap-3"><input id="featured" type="checkbox" wire:model="form.is_featured" class="rounded border-slate-300 text-dobero-blue"><label for="featured" class="text-sm text-slate-600">Featured property</label></div>
-        <div class="lg:col-span-2">
-            <label class="form-label">Upload Images</label>
-            <input type="file" wire:model="imageUploads" multiple class="form-input">
-            @error('imageUploads.*')<p class="form-error">{{ $message }}</p>@enderror
+        <div>
+            <label class="form-label">Main Photo</label>
+            <input type="file" wire:model="mainImageUpload" class="form-input" accept="image/*">
+            <p class="mt-2 text-xs text-slate-500">Used as the main listing and hero image.</p>
+            @error('mainImageUpload')<p class="form-error">{{ $message }}</p>@enderror
         </div>
-        @if ($existingImages)
-            <div class="lg:col-span-2 grid gap-4 md:grid-cols-3">
-                @foreach ($existingImages as $index => $image)
-                    <div class="relative overflow-hidden rounded-2xl border border-slate-200"><img src="{{ image_url($image) }}" alt="Property image {{ $index + 1 }}" class="h-40 w-full object-cover"><button type="button" wire:click="removeImage({{ $index }})" class="absolute right-3 top-3 rounded-full bg-white px-3 py-1 text-xs text-rose-600">Remove</button></div>
-                @endforeach
+        <div>
+            <label class="form-label">Other Photos</label>
+            <input type="file" wire:model="galleryImageUploads" multiple class="form-input" accept="image/*">
+            <p class="mt-2 text-xs text-slate-500">You can select several gallery photos at once.</p>
+            @error('galleryImageUploads')<p class="form-error">{{ $message }}</p>@enderror
+            @error('galleryImageUploads.*')<p class="form-error">{{ $message }}</p>@enderror
+        </div>
+        @if ($existingMainImage)
+            <div class="lg:col-span-2">
+                <p class="mb-3 text-xs font-semibold uppercase tracking-widest text-slate-400">Current Main Photo</p>
+                <div class="relative overflow-hidden rounded-2xl border border-slate-200">
+                    <img src="{{ image_url($existingMainImage) }}" alt="Current main property photo" class="h-56 w-full object-cover">
+                    <button type="button" wire:click="removeMainImage" class="absolute right-3 top-3 rounded-full bg-white px-3 py-1 text-xs text-rose-600">Remove main photo</button>
+                </div>
+            </div>
+        @endif
+        @if ($existingGalleryImages)
+            <div class="lg:col-span-2">
+                <p class="mb-3 text-xs font-semibold uppercase tracking-widest text-slate-400">Current Gallery Photos</p>
+                <div class="grid gap-4 md:grid-cols-3">
+                    @foreach ($existingGalleryImages as $index => $image)
+                        <div class="relative overflow-hidden rounded-2xl border border-slate-200"><img src="{{ image_url($image) }}" alt="Gallery property image {{ $index + 1 }}" class="h-40 w-full object-cover"><button type="button" wire:click="removeGalleryImage({{ $index }})" class="absolute right-3 top-3 rounded-full bg-white px-3 py-1 text-xs text-rose-600">Remove</button></div>
+                    @endforeach
+                </div>
             </div>
         @endif
         <div class="lg:col-span-2 border-t border-slate-200 pt-4">

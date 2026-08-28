@@ -22,9 +22,13 @@ class PropertyForm extends Component
 
     public array $form = [];
 
-    public array $existingImages = [];
+    public ?string $existingMainImage = null;
 
-    public array $imageUploads = [];
+    public array $existingGalleryImages = [];
+
+    public $mainImageUpload = null;
+
+    public array $galleryImageUploads = [];
 
     public function mount(?Property $property = null): void
     {
@@ -49,13 +53,21 @@ class PropertyForm extends Component
             'meta_title' => $this->property ? $this->fillTranslations($this->property->getTranslations('meta_title')) : $this->blankTranslations(),
             'meta_description' => $this->property ? $this->fillTranslations($this->property->getTranslations('meta_description')) : $this->blankTranslations(),
         ];
-        $this->existingImages = $this->property?->images ?? [];
+
+        $images = $this->property?->images ?? [];
+        $this->existingMainImage = $images[0] ?? null;
+        $this->existingGalleryImages = array_values(array_slice($images, 1));
     }
 
-    public function removeImage(int $index): void
+    public function removeMainImage(): void
     {
-        unset($this->existingImages[$index]);
-        $this->existingImages = array_values($this->existingImages);
+        $this->existingMainImage = null;
+    }
+
+    public function removeGalleryImage(int $index): void
+    {
+        unset($this->existingGalleryImages[$index]);
+        $this->existingGalleryImages = array_values($this->existingGalleryImages);
     }
 
     public function save()
@@ -75,7 +87,9 @@ class PropertyForm extends Component
             'form.sqm' => ['required', 'numeric', 'min:0'],
             'form.is_featured' => ['boolean'],
             'form.property_id_ref' => ['nullable', 'string', 'max:255'],
-            'imageUploads.*' => ['nullable', 'image', 'max:2048'],
+            'mainImageUpload' => ['nullable', 'image', 'max:2048'],
+            'galleryImageUploads' => ['array'],
+            'galleryImageUploads.*' => ['nullable', 'image', 'max:2048'],
         ];
 
         foreach ($this->localeKeys() as $locale) {
@@ -87,19 +101,17 @@ class PropertyForm extends Component
 
         $validated = $this->validate($rules);
 
-        $images = $this->existingImages;
-        foreach ($this->imageUploads as $upload) {
-            $path = $upload->store('properties', 'public');
-            $fullPath = storage_path('app/public/'.$path);
-            if (file_exists($fullPath)) {
-                try {
-                    OptimizerChainFactory::create()->optimize($fullPath);
-                } catch (\Throwable) {
-                    // Optimization failed (missing binaries); continue without it
-                }
-            }
-            $images[] = $path;
+        $mainImage = $this->existingMainImage;
+        if ($this->mainImageUpload) {
+            $mainImage = $this->storeOptimizedImage($this->mainImageUpload);
         }
+
+        $galleryImages = $this->existingGalleryImages;
+        foreach ($this->galleryImageUploads as $upload) {
+            $galleryImages[] = $this->storeOptimizedImage($upload);
+        }
+
+        $images = array_values(array_filter([$mainImage, ...$galleryImages]));
 
         $payload = Arr::except($validated['form'], ['title', 'description']);
         $englishTitle = $this->form['title'][default_locale()] ?? '';
@@ -118,6 +130,22 @@ class PropertyForm extends Component
         session()->flash('status', 'Property saved successfully.');
 
         return $this->redirectRoute('admin.properties.index', navigate: true);
+    }
+
+    protected function storeOptimizedImage($upload): string
+    {
+        $path = $upload->store('properties', 'public');
+        $fullPath = storage_path('app/public/'.$path);
+
+        if (file_exists($fullPath)) {
+            try {
+                OptimizerChainFactory::create()->optimize($fullPath);
+            } catch (\Throwable) {
+                // Optimization failed (missing binaries); continue without it
+            }
+        }
+
+        return $path;
     }
 
     public function render()
