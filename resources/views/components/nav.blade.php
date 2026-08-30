@@ -92,22 +92,22 @@
 
                 <div x-cloak x-show="active === 'Specials'" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-1" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="absolute left-1/2 -translate-x-1/2 top-full pt-2 z-50">
                     <div class="nav-dropdown-inner">
-                        <a href="#residency-assistance" class="nav-dropdown-item">{{ __('Residency Assistance (Costa Blanca)') }}</a>
-                        <a href="#technical-property-inspection" class="nav-dropdown-item">{{ __('Technical Property Inspection') }}</a>
-                        <a href="#real-estate-brokerage" class="nav-dropdown-item">{{ __('Real Estate Brokerage') }}</a>
-                        <a href="#mortgage-assistance" class="nav-dropdown-item">{{ __('Mortgage Assistance') }}</a>
-                        <a href="#renovation-remodeling" class="nav-dropdown-item">{{ __('Renovation and Remodeling') }}</a>
-                        <a href="#electrical-compliance" class="nav-dropdown-item">{{ __('Electrical Compliance Certificate (Boletín)') }}</a>
-                        <a href="#thermal-acoustic-insulation" class="nav-dropdown-item">{{ __('Thermal and Acoustic Insulation') }}</a>
-                        <a href="#project-management" class="nav-dropdown-item">{{ __('Project Management') }}</a>
-                        <a href="#building-rehabilitation" class="nav-dropdown-item">{{ __('Building Rehabilitation') }}</a>
-                        <a href="#rope-access-vertical-works" class="nav-dropdown-item">{{ __('Rope Access / Vertical Works') }}</a>
-                        <a href="#hidden-defect-inspection" class="nav-dropdown-item">{{ __('Hidden Defect Inspection') }}</a>
-                        <a href="#building-pathology" class="nav-dropdown-item">{{ __('Building Pathology') }}</a>
-                        <a href="#expert-witness-legal" class="nav-dropdown-item">{{ __('Expert Witness and Technical Support for Legal Proceedings') }}</a>
-                        <a href="#energy-performance-certificate" class="nav-dropdown-item">{{ __('Energy Performance Certificate (EPC)') }}</a>
-                        <a href="#solar-panel-installation" class="nav-dropdown-item">{{ __('Solar Panel System Installation') }}</a>
-                        <a href="#terrace-enclosure" class="nav-dropdown-item">{{ __('Terrace Enclosure (with Aluminium Frames and Sandwich Panels)') }}</a>
+                        <a href="{{ route('specials') }}#residency-assistance" class="nav-dropdown-item">{{ __('Residency Assistance (Costa Blanca)') }}</a>
+                        <a href="{{ route('specials') }}#technical-property-inspection" class="nav-dropdown-item">{{ __('Technical Property Inspection') }}</a>
+                        <a href="{{ route('specials') }}#real-estate-brokerage" class="nav-dropdown-item">{{ __('Real Estate Brokerage') }}</a>
+                        <a href="{{ route('specials') }}#mortgage-assistance" class="nav-dropdown-item">{{ __('Mortgage Assistance') }}</a>
+                        <a href="{{ route('specials') }}#renovation-remodeling" class="nav-dropdown-item">{{ __('Renovation and Remodeling') }}</a>
+                        <a href="{{ route('specials') }}#electrical-compliance" class="nav-dropdown-item">{{ __('Electrical Compliance Certificate (Boletín)') }}</a>
+                        <a href="{{ route('specials') }}#thermal-acoustic-insulation" class="nav-dropdown-item">{{ __('Thermal and Acoustic Insulation') }}</a>
+                        <a href="{{ route('specials') }}#project-management" class="nav-dropdown-item">{{ __('Project Management') }}</a>
+                        <a href="{{ route('specials') }}#building-rehabilitation" class="nav-dropdown-item">{{ __('Building Rehabilitation') }}</a>
+                        <a href="{{ route('specials') }}#rope-access-vertical-works" class="nav-dropdown-item">{{ __('Rope Access / Vertical Works') }}</a>
+                        <a href="{{ route('specials') }}#hidden-defect-inspection" class="nav-dropdown-item">{{ __('Hidden Defect Inspection') }}</a>
+                        <a href="{{ route('specials') }}#building-pathology" class="nav-dropdown-item">{{ __('Building Pathology') }}</a>
+                        <a href="{{ route('specials') }}#expert-witness-legal" class="nav-dropdown-item">{{ __('Expert Witness and Technical Support for Legal Proceedings') }}</a>
+                        <a href="{{ route('specials') }}#energy-performance-certificate" class="nav-dropdown-item">{{ __('Energy Performance Certificate (EPC)') }}</a>
+                        <a href="{{ route('specials') }}#solar-panel-installation" class="nav-dropdown-item">{{ __('Solar Panel System Installation') }}</a>
+                        <a href="{{ route('specials') }}#terrace-enclosure" class="nav-dropdown-item">{{ __('Terrace Enclosure (with Aluminium Frames and Sandwich Panels)') }}</a>
                     </div>
                 </div>
             </div>
