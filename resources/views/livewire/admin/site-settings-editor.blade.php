@@ -17,9 +17,9 @@
                     <label class="form-label">{{ ucwords(str_replace('_', ' ', $record->key)) }}</label>
                     @if ($record->is_translatable)
                         @if ($record->type === 'textarea')
-                            <textarea wire:model="settings.{{ $record->key }}.{{ $activeLocale }}" rows="4" class="form-input"></textarea>
+                            <textarea wire:key="setting-{{ $record->key }}-{{ $activeLocale }}" wire:model="settings.{{ $record->key }}.{{ $activeLocale }}" rows="4" class="form-input"></textarea>
                         @else
-                            <input wire:model="settings.{{ $record->key }}.{{ $activeLocale }}" class="form-input">
+                            <input wire:key="setting-{{ $record->key }}-{{ $activeLocale }}" wire:model="settings.{{ $record->key }}.{{ $activeLocale }}" class="form-input">
                         @endif
                     @else
                         @if ($record->type === 'textarea')
@@ -42,9 +42,9 @@
                         <label class="form-label">{{ ucwords(str_replace('_', ' ', $record->key)) }}</label>
                         @if ($record->is_translatable)
                             @if ($record->type === 'textarea')
-                                <textarea wire:model="settings.{{ $record->key }}.{{ $activeLocale }}" rows="3" class="form-input"></textarea>
+                                <textarea wire:key="setting-{{ $record->key }}-{{ $activeLocale }}" wire:model="settings.{{ $record->key }}.{{ $activeLocale }}" rows="3" class="form-input"></textarea>
                             @else
-                                <input wire:model="settings.{{ $record->key }}.{{ $activeLocale }}" class="form-input">
+                                <input wire:key="setting-{{ $record->key }}-{{ $activeLocale }}" wire:model="settings.{{ $record->key }}.{{ $activeLocale }}" class="form-input">
                             @endif
                         @else
                             <input wire:model="settings.{{ $record->key }}" class="form-input" placeholder="https://maps.google.com/...">

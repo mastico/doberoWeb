@@ -42,14 +42,14 @@
         {{-- Question --}}
         <div class="lg:col-span-2">
             <label class="form-label">Question <span class="ml-1 text-xs text-slate-400 uppercase">{{ $activeLocale }}</span></label>
-            <input wire:model="form.question.{{ $activeLocale }}" class="form-input">
+            <input wire:key="faq-question-{{ $activeLocale }}" wire:model="form.question.{{ $activeLocale }}" class="form-input">
             @error("form.question.{$activeLocale}") <p class="form-error">{{ $message }}</p> @enderror
         </div>
 
         {{-- Answer --}}
         <div class="lg:col-span-2">
             <label class="form-label">Answer <span class="ml-1 text-xs text-slate-400 uppercase">{{ $activeLocale }}</span></label>
-            <textarea wire:model="form.answer.{{ $activeLocale }}" rows="5" class="form-input"></textarea>
+            <textarea wire:key="faq-answer-{{ $activeLocale }}" wire:model="form.answer.{{ $activeLocale }}" rows="5" class="form-input"></textarea>
             @error("form.answer.{$activeLocale}") <p class="form-error">{{ $message }}</p> @enderror
         </div>
 

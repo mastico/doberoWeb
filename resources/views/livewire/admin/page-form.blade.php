@@ -8,11 +8,11 @@
     <form wire:submit="save" class="grid gap-6 lg:grid-cols-2">
         <div><label class="form-label">Key</label><input wire:model="form.key" class="form-input" @if($page?->exists && ! $page->deletable) disabled @endif></div>
         <div><label class="form-label">Sort Order</label><input type="number" wire:model="form.sort_order" class="form-input"></div>
-        <div><label class="form-label">Slug</label><input wire:model="form.slug.{{ $activeLocale }}" class="form-input"></div>
-        <div><label class="form-label">Title</label><input wire:model="form.title.{{ $activeLocale }}" class="form-input"></div>
-        <div class="lg:col-span-2"><label class="form-label">Body</label><textarea wire:model="form.body.{{ $activeLocale }}" rows="10" class="form-input"></textarea></div>
-        <div><label class="form-label">Meta Title</label><input wire:model="form.meta_title.{{ $activeLocale }}" class="form-input"></div>
-        <div><label class="form-label">Meta Description</label><textarea wire:model="form.meta_description.{{ $activeLocale }}" rows="3" class="form-input"></textarea></div>
+        <div><label class="form-label">Slug</label><input wire:key="page-slug-{{ $activeLocale }}" wire:model="form.slug.{{ $activeLocale }}" class="form-input"></div>
+        <div><label class="form-label">Title</label><input wire:key="page-title-{{ $activeLocale }}" wire:model="form.title.{{ $activeLocale }}" class="form-input"></div>
+        <div class="lg:col-span-2"><label class="form-label">Body</label><textarea wire:key="page-body-{{ $activeLocale }}" wire:model="form.body.{{ $activeLocale }}" rows="10" class="form-input"></textarea></div>
+        <div><label class="form-label">Meta Title</label><input wire:key="page-meta-title-{{ $activeLocale }}" wire:model="form.meta_title.{{ $activeLocale }}" class="form-input"></div>
+        <div><label class="form-label">Meta Description</label><textarea wire:key="page-meta-description-{{ $activeLocale }}" wire:model="form.meta_description.{{ $activeLocale }}" rows="3" class="form-input"></textarea></div>
         <div class="lg:col-span-2 flex items-center gap-3"><input type="checkbox" wire:model="form.is_published" class="rounded border-slate-300 text-dobero-blue"><label class="text-sm text-slate-600">Published</label></div>
         <div class="lg:col-span-2 flex gap-4"><button class="btn-primary">Save Page</button><a href="{{ route('admin.pages.index') }}" class="rounded-full border border-slate-300 px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-slate-600">Cancel</a></div>
     </form>

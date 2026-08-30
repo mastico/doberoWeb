@@ -5,9 +5,9 @@
         @endforeach
     </div>
     <form wire:submit="save" class="grid gap-6 lg:grid-cols-2">
-        <div class="lg:col-span-2"><label class="form-label">Content</label><textarea wire:model="form.content.{{ $activeLocale }}" rows="5" class="form-input"></textarea></div>
+        <div class="lg:col-span-2"><label class="form-label">Content</label><textarea wire:key="testimonial-content-{{ $activeLocale }}" wire:model="form.content.{{ $activeLocale }}" rows="5" class="form-input"></textarea></div>
         <div><label class="form-label">Author Name</label><input wire:model="form.author_name" class="form-input"></div>
-        <div><label class="form-label">Author Role</label><input wire:model="form.author_role.{{ $activeLocale }}" class="form-input"></div>
+        <div><label class="form-label">Author Role</label><input wire:key="testimonial-author-role-{{ $activeLocale }}" wire:model="form.author_role.{{ $activeLocale }}" class="form-input"></div>
         <div><label class="form-label">Author Company</label><input wire:model="form.author_company" class="form-input"></div>
         <div><label class="form-label">Sort Order</label><input type="number" wire:model="form.sort_order" class="form-input"></div>
         <div class="flex items-center gap-3"><input type="checkbox" wire:model="form.is_active" class="rounded border-slate-300 text-dobero-blue"><label class="text-sm text-slate-600">Active</label></div>

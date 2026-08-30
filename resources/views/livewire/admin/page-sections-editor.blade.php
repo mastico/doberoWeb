@@ -26,9 +26,9 @@
                 @endforeach
             </div>
             <form wire:submit="save" class="space-y-6">
-                <div><label class="form-label">Title</label><input wire:model="form.title.{{ $activeLocale }}" class="form-input"></div>
-                <div><label class="form-label">Subtitle</label><input wire:model="form.subtitle.{{ $activeLocale }}" class="form-input"></div>
-                <div><label class="form-label">Content</label><textarea wire:model="form.content.{{ $activeLocale }}" rows="6" class="form-input"></textarea></div>
+                <div><label class="form-label">Title</label><input wire:key="section-{{ $selectedSectionId }}-title-{{ $activeLocale }}" wire:model="form.title.{{ $activeLocale }}" class="form-input"></div>
+                <div><label class="form-label">Subtitle</label><input wire:key="section-{{ $selectedSectionId }}-subtitle-{{ $activeLocale }}" wire:model="form.subtitle.{{ $activeLocale }}" class="form-input"></div>
+                <div><label class="form-label">Content</label><textarea wire:key="section-{{ $selectedSectionId }}-content-{{ $activeLocale }}" wire:model="form.content.{{ $activeLocale }}" rows="6" class="form-input"></textarea></div>
                 <div><label class="form-label">Extra JSON</label><textarea wire:model="form.extra" rows="12" class="form-input font-mono text-sm"></textarea>@error('form.extra')<p class="form-error">{{ $message }}</p>@enderror</div>
                 <div class="grid gap-6 md:grid-cols-2">
                     <div><label class="form-label">Sort Order</label><input type="number" wire:model="form.sort_order" class="form-input"></div>

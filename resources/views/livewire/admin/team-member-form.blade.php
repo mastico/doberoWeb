@@ -6,8 +6,8 @@
     </div>
     <form wire:submit="save" class="grid gap-6 lg:grid-cols-2">
         <div><label class="form-label">Name</label><input wire:model="form.name" class="form-input"></div>
-        <div><label class="form-label">Role</label><input wire:model="form.role.{{ $activeLocale }}" class="form-input"></div>
-        <div class="lg:col-span-2"><label class="form-label">Bio</label><textarea wire:model="form.bio.{{ $activeLocale }}" rows="5" class="form-input"></textarea></div>
+        <div><label class="form-label">Role</label><input wire:key="team-role-{{ $activeLocale }}" wire:model="form.role.{{ $activeLocale }}" class="form-input"></div>
+        <div class="lg:col-span-2"><label class="form-label">Bio</label><textarea wire:key="team-bio-{{ $activeLocale }}" wire:model="form.bio.{{ $activeLocale }}" rows="5" class="form-input"></textarea></div>
         <div><label class="form-label">Sort Order</label><input type="number" wire:model="form.sort_order" class="form-input"></div>
         <div class="flex items-center gap-3"><input type="checkbox" wire:model="form.is_active" class="rounded border-slate-300 text-dobero-blue"><label class="text-sm text-slate-600">Active</label></div>
         <div class="lg:col-span-2"><label class="form-label">Photo</label><input type="file" wire:model="photoUpload" class="form-input"></div>
