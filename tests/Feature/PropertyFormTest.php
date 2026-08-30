@@ -96,5 +96,48 @@ class PropertyFormTest extends TestCase
             Storage::disk('public')->assertExists($path);
         }
     }
+
+    public function test_editing_hungarian_property_content_preserves_english_translations(): void
+    {
+        $this->actingAs(User::factory()->withPersonalTeam()->create());
+
+        $property = Property::create([
+            'title' => ['en' => 'English title', 'hu' => 'Eredeti magyar cím'],
+            'description' => ['en' => 'English description', 'hu' => 'Eredeti magyar leírás'],
+            'meta_title' => ['en' => 'English SEO title', 'hu' => 'Eredeti magyar SEO cím'],
+            'meta_description' => ['en' => 'English SEO description', 'hu' => 'Eredeti magyar SEO leírás'],
+            'address' => 'Calle del Mar 12',
+            'city' => 'Torrevieja',
+            'state_country' => 'Alicante',
+            'postal_code' => '03181',
+            'price' => 900,
+            'currency' => 'EUR',
+            'property_type' => 'house',
+            'status' => 'for_rent',
+            'bedrooms' => 1,
+            'bathrooms' => 1,
+            'sqm' => 28,
+        ]);
+
+        Livewire::test(PropertyForm::class, ['property' => $property])
+            ->set('form.title.hu', 'Frissített magyar cím')
+            ->set('form.description.hu', 'Frissített magyar leírás')
+            ->set('form.meta_title.hu', 'Frissített magyar SEO cím')
+            ->set('form.meta_description.hu', 'Frissített magyar SEO leírás')
+            ->call('save')
+            ->assertHasNoErrors()
+            ->assertRedirect(route('admin.properties.index'));
+
+        $property->refresh();
+
+        $this->assertSame('English title', $property->getTranslation('title', 'en'));
+        $this->assertSame('English description', $property->getTranslation('description', 'en'));
+        $this->assertSame('English SEO title', $property->getTranslation('meta_title', 'en'));
+        $this->assertSame('English SEO description', $property->getTranslation('meta_description', 'en'));
+        $this->assertSame('Frissített magyar cím', $property->getTranslation('title', 'hu'));
+        $this->assertSame('Frissített magyar leírás', $property->getTranslation('description', 'hu'));
+        $this->assertSame('Frissített magyar SEO cím', $property->getTranslation('meta_title', 'hu'));
+        $this->assertSame('Frissített magyar SEO leírás', $property->getTranslation('meta_description', 'hu'));
+    }
 }
 

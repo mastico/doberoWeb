@@ -22,7 +22,7 @@
     <form wire:submit="save" class="grid gap-6 lg:grid-cols-2">
         <div>
             <label class="form-label">Title</label>
-            <input wire:model="form.title.{{ $activeLocale }}" class="form-input">
+            <input wire:key="property-title-{{ $activeLocale }}" wire:model="form.title.{{ $activeLocale }}" class="form-input">
             @error('form.title.'.$activeLocale)<p class="form-error">{{ $message }}</p>@enderror
         </div>
         <div>
@@ -32,7 +32,7 @@
         </div>
         <div class="lg:col-span-2">
             <label class="form-label">Description</label>
-            <textarea wire:model="form.description.{{ $activeLocale }}" rows="5" class="form-input"></textarea>
+            <textarea wire:key="property-description-{{ $activeLocale }}" wire:model="form.description.{{ $activeLocale }}" rows="5" class="form-input"></textarea>
             @error('form.description.'.$activeLocale)<p class="form-error">{{ $message }}</p>@enderror
         </div>
         <div>
@@ -133,12 +133,12 @@
             <div class="grid gap-4 lg:grid-cols-2">
                 <div>
                     <label class="form-label">Meta Title</label>
-                    <input wire:model="form.meta_title.{{ $activeLocale }}" class="form-input" placeholder="Override page title for search engines">
+                    <input wire:key="property-meta-title-{{ $activeLocale }}" wire:model="form.meta_title.{{ $activeLocale }}" class="form-input" placeholder="Override page title for search engines">
                     @error('form.meta_title.'.$activeLocale)<p class="form-error">{{ $message }}</p>@enderror
                 </div>
                 <div>
                     <label class="form-label">Meta Description</label>
-                    <textarea wire:model="form.meta_description.{{ $activeLocale }}" rows="2" class="form-input" placeholder="160-character summary for search results"></textarea>
+                    <textarea wire:key="property-meta-description-{{ $activeLocale }}" wire:model="form.meta_description.{{ $activeLocale }}" rows="2" class="form-input" placeholder="160-character summary for search results"></textarea>
                     @error('form.meta_description.'.$activeLocale)<p class="form-error">{{ $message }}</p>@enderror
                 </div>
             </div>

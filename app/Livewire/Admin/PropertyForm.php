@@ -113,7 +113,7 @@ class PropertyForm extends Component
 
         $images = array_values(array_filter([$mainImage, ...$galleryImages]));
 
-        $payload = Arr::except($validated['form'], ['title', 'description']);
+        $payload = Arr::except($validated['form'], ['title', 'description', 'meta_title', 'meta_description']);
         $englishTitle = $this->form['title'][default_locale()] ?? '';
         $payload['slug'] = filled($payload['slug']) ? Str::slug($payload['slug']) : Str::slug($englishTitle);
         $payload['images'] = $images;
