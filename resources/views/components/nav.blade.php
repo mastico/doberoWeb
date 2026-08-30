@@ -5,7 +5,22 @@
             ->active()
             ->ordered()
             ->with(['children' => fn ($query) => $query->active()->ordered()])
-            ->get();
+            ->get()
+            ->reject(function (\App\Models\NavItem $item): bool {
+                $legacySpecialsChildren = [
+                    'Technical Condition Assessment',
+                    'Discovery of Hidden Defects',
+                    'Waterproofing Solutions',
+                    'Forensic Expert Support',
+                ];
+
+                return $item->getTranslation('label', 'en', false) === 'Specials'
+                    && $item->children
+                        ->map(fn (\App\Models\NavItem $child) => $child->getTranslation('label', 'en', false))
+                        ->sort()
+                        ->values()
+                        ->all() === collect($legacySpecialsChildren)->sort()->values()->all();
+            });
     } else {
         $primary = collect();
     }
