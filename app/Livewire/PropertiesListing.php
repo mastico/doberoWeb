@@ -116,11 +116,72 @@ class PropertiesListing extends Component
 
         $properties = $query->paginate(6);
 
+        // Build option lists dynamically so non-applicable options (e.g. cities without properties)
+        // are not shown when filters like status are applied.
+        $applyFiltersExcept = function ($q, $exclude = null) {
+            if ($exclude !== 'type' && $this->type !== '') {
+                $q->where('property_type', $this->type);
+            }
+
+            if ($exclude !== 'status' && $this->status !== '') {
+                $q->where('status', $this->status);
+            }
+
+            if ($exclude !== 'city' && $this->city !== '') {
+                $q->where('city', $this->city);
+            }
+
+            if ($this->keyword !== '') {
+                $q->where(function ($q) {
+                    $q->where('title', 'like', '%'.$this->keyword.'%')
+                        ->orWhere('city', 'like', '%'.$this->keyword.'%')
+                        ->orWhere('address', 'like', '%'.$this->keyword.'%')
+                        ->orWhere('description', 'like', '%'.$this->keyword.'%');
+                });
+            }
+
+            if ($this->minPrice) {
+                $q->where('price', '>=', $this->minPrice);
+            }
+
+            if ($this->maxPrice) {
+                $q->where('price', '<=', $this->maxPrice);
+            }
+
+            if ($this->minBedrooms) {
+                $q->where('bedrooms', '>=', $this->minBedrooms);
+            }
+
+            if ($this->minBathrooms) {
+                $q->where('bathrooms', '>=', $this->minBathrooms);
+            }
+
+            return $q;
+        };
+
+        // Property types available given current filters (but not filtered by type itself)
+        $typesQuery = $applyFiltersExcept(clone Property::query(), 'type');
+        $propertyTypes = $typesQuery->whereNotNull('property_type')
+            ->where('property_type', '!=', '')
+            ->distinct()
+            ->orderBy('property_type')
+            ->pluck('property_type');
+
+        // Cities available given current filters (but not filtered by city itself)
+        $citiesQuery = $applyFiltersExcept(clone Property::query(), 'city');
+        $cities = $citiesQuery->whereNotNull('city')
+            ->where('city', '!=', '')
+            ->distinct()
+            ->orderBy('city')
+            ->pluck('city');
+
+        $statuses = ['for_sale', 'for_rent', 'sold', 'rented', 'new'];
+
         return view('livewire.properties-listing', [
             'properties' => $properties,
-            'propertyTypes' => ['flat', 'studio', 'house', 'duplex', 'penthouse', 'bungalow', 'other'],
-            'statuses' => ['for_sale', 'for_rent', 'sold', 'rented', 'new'],
-            'cities' => Property::query()->whereNotNull('city')->where('city', '!=', '')->distinct()->orderBy('city')->pluck('city'),
+            'propertyTypes' => $propertyTypes,
+            'statuses' => $statuses,
+            'cities' => $cities,
         ])->layout('components.layouts.app', [
             'title' => 'Properties',
             'canonical' => route('properties.index'),
