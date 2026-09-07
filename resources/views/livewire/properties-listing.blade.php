@@ -71,12 +71,12 @@
                     </div>
                     <div>
                         <label class="form-label text-white/60">Min Price €</label>
-                        <input type="number" wire:model.live="minPrice"
+                        <input type="number" wire:model.live.debounce.500ms="minPrice"
                                class="w-full border-0 border-b border-white/20 bg-transparent px-0 py-3 text-sm text-white focus:border-brass-light focus:ring-0">
                     </div>
                     <div>
                         <label class="form-label text-white/60">Max Price €</label>
-                        <input type="number" wire:model.live="maxPrice"
+                        <input type="number" wire:model.live.debounce.500ms="maxPrice"
                                class="w-full border-0 border-b border-white/20 bg-transparent px-0 py-3 text-sm text-white focus:border-brass-light focus:ring-0">
                     </div>
                     <div>
