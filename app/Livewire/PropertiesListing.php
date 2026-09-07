@@ -37,6 +37,7 @@ class PropertiesListing extends Component
 
     public bool $showAdvanced = false;
 
+    #[Url(as: 'sort')]
     public string $sort = 'latest';
 
     public string $viewMode = 'grid';
