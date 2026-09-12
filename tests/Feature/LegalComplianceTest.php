@@ -184,6 +184,7 @@ class LegalComplianceTest extends TestCase
         $this->get('/')
             ->assertOk()
             ->assertSee('© '.now()->year.' János Németh – Dobero.es - DOBERO. All rights reserved.')
+            ->assertSee('János Németh – Sole trader')
             ->assertSee('Owner: János Németh')
             ->assertSee('NIF: Y1962730Q')
             ->assertSee('Business activity: Real estate brokerage and real estate services')
@@ -198,6 +199,7 @@ class LegalComplianceTest extends TestCase
 
         $this->get('/es')
             ->assertOk()
+            ->assertSee('János Németh – Autónomo')
             ->assertSee('János Németh')
             ->assertSee('Y1962730Q')
             ->assertSee('DOBERO')
