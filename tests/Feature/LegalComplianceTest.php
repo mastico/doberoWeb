@@ -200,6 +200,7 @@ class LegalComplianceTest extends TestCase
         $this->get('/es')
             ->assertOk()
             ->assertSee('János Németh – Autónomo')
+            ->assertSee('Propietario')
             ->assertSee('János Németh')
             ->assertSee('Y1962730Q')
             ->assertSee('DOBERO')
@@ -211,6 +212,7 @@ class LegalComplianceTest extends TestCase
             ->assertSee('href="'.url('/es/aviso-legal').'"', false)
             ->assertSee('href="'.url('/es/politica-privacidad').'"', false)
             ->assertSee('href="'.url('/es/politica-cookies').'"', false)
+            ->assertDontSee('CEO')
             ->assertDontSee('Dobero S.L.');
     }
 

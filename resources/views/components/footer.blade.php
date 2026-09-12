@@ -6,6 +6,7 @@
     $legalTradeName = \App\Models\SiteSetting::get('legal_trade_name', 'DOBERO');
     $legalActivity = \App\Models\SiteSetting::get('legal_activity', 'Real estate brokerage and real estate services');
     $legalStatus = __('Sole trader');
+    $legalOwnerLabel = app()->isLocale('es') ? 'Propietario' : __('Owner');
     $legalNif = \App\Models\SiteSetting::get('legal_nif');
     $legalAddress = \App\Models\SiteSetting::get('legal_address', \App\Models\SiteSetting::get('address', 'Costa Blanca, Spain'));
     $phone = \App\Models\SiteSetting::get('phone', '+1 (800) 990 8877');
@@ -77,7 +78,7 @@
 
                 <div class="mt-8 border-t border-white/10 pt-6">
                     <div class="space-y-2 font-body text-[14px] font-light text-white/65">
-                        <p>{{ __('Owner') }}: {{ $legalOwner }} – {{ $legalStatus }}</p>
+                        <p>{{ $legalOwnerLabel }}: {{ $legalOwner }} – {{ $legalStatus }}</p>
                         <p>{{ __('NIF') }}: {{ $legalNif }}</p>
                         <p>{{ __('Business activity') }}: {{ $legalActivity }}</p>
                     </div>

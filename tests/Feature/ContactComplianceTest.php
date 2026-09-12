@@ -102,14 +102,27 @@ class ContactComplianceTest extends TestCase
     {
         $this->seed(DatabaseSeeder::class);
 
-        $privacyPolicyUrl = url('/privacy-policy');
+        $localizedHomeExpectations = [
+            '/' => url('/privacy-policy'),
+            '/es' => url('/es/politica-privacidad'),
+            '/hu' => url('/hu/adatvedelmi-tajekoztato'),
+        ];
+
+        $localizedContactExpectations = [
+            '/contact' => url('/privacy-policy'),
+            '/es/contacto' => url('/es/politica-privacidad'),
+            '/hu/kapcsolat' => url('/hu/adatvedelmi-tajekoztato'),
+        ];
+
+        $privacyConsentWireModelPattern = '/<input type="checkbox" wire:model="privacy_consent" class="mt-1" required(?:\s*\/)?>/';
+        $privacyConsentHttpInputPattern = '/<input type="checkbox" name="privacy_consent" class="mt-1" required(?:\s*\/)?>/';
 
         $this->get('/')
             ->assertOk()
             ->assertSee('wire:model="privacy_consent"', false)
             ->assertSeeInOrder([
                 'I have read and accept the',
-                'href="'.$privacyPolicyUrl.'"',
+                'href="'.url('/privacy-policy').'"',
                 'Privacy Policy',
             ], false);
 
@@ -118,8 +131,30 @@ class ContactComplianceTest extends TestCase
             ->assertSee('name="privacy_consent"', false)
             ->assertSeeInOrder([
                 'I have read and accept the',
-                'href="'.$privacyPolicyUrl.'"',
+                'href="'.url('/privacy-policy').'"',
                 'Privacy Policy',
             ], false);
+
+        foreach ($localizedHomeExpectations as $path => $privacyPolicyUrl) {
+            $response = $this->get($path);
+
+            $response
+                ->assertOk()
+                ->assertSee('wire:model="privacy_consent"', false)
+                ->assertSee('href="'.$privacyPolicyUrl.'"', false);
+
+            $this->assertMatchesRegularExpression($privacyConsentWireModelPattern, $response->getContent());
+        }
+
+        foreach ($localizedContactExpectations as $path => $privacyPolicyUrl) {
+            $response = $this->get($path);
+
+            $response
+                ->assertOk()
+                ->assertSee('name="privacy_consent"', false)
+                ->assertSee('href="'.$privacyPolicyUrl.'"', false);
+
+            $this->assertMatchesRegularExpression($privacyConsentHttpInputPattern, $response->getContent());
+        }
     }
 }
