@@ -177,6 +177,41 @@ class LegalComplianceTest extends TestCase
             ->assertSee('Jogi nyilatkozat');
     }
 
+    public function test_public_footer_exposes_legal_identity_links_and_provisional_address_notice(): void
+    {
+        $this->seed(DatabaseSeeder::class);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('© '.now()->year.' János Németh – Dobero.es - DOBERO. All rights reserved.')
+            ->assertSee('Owner: János Németh')
+            ->assertSee('NIF: Y1962730Q')
+            ->assertSee('Business activity: Real estate brokerage and real estate services')
+            ->assertSee('urb.Residencial la Torre 28.')
+            ->assertSee('The professional address shown is provisional pending confirmation. Replace it with the official address and lawyer-approved wording before launch.')
+            ->assertSee('href="'.url('/legal-notice').'"', false)
+            ->assertSee('href="'.url('/privacy-policy').'"', false)
+            ->assertSee('href="'.url('/cookie-policy').'"', false)
+            ->assertSee('Cookie Settings')
+            ->assertSee('dobero:open-cookie-settings')
+            ->assertDontSee('Dobero S.L.');
+
+        $this->get('/es')
+            ->assertOk()
+            ->assertSee('János Németh')
+            ->assertSee('Y1962730Q')
+            ->assertSee('DOBERO')
+            ->assertSee('Aviso Legal')
+            ->assertSee('Política de Privacidad')
+            ->assertSee('Política de Cookies')
+            ->assertSee('Cookie Settings')
+            ->assertSee('La dirección profesional mostrada es provisional y está pendiente de confirmación. Sustitúyala por la dirección oficial y por un texto aprobado por asesoría jurídica antes del lanzamiento.')
+            ->assertSee('href="'.url('/es/aviso-legal').'"', false)
+            ->assertSee('href="'.url('/es/politica-privacidad').'"', false)
+            ->assertSee('href="'.url('/es/politica-cookies').'"', false)
+            ->assertDontSee('Dobero S.L.');
+    }
+
     public function test_locale_route_returns_the_current_locale_legal_urls(): void
     {
         app()->setLocale('en');
