@@ -163,5 +163,13 @@
     "Analytics": "Analytics",
     "Marketing": "Marketing",
     "Save preferences": "Save preferences",
+    "Choose which cookies you want to allow.": "Choose which cookies you want to allow.",
+    "We only use necessary cookies by default. You can accept or reject optional analytics and marketing cookies, or configure them individually at any time.": "We only use necessary cookies by default. You can accept or reject optional analytics and marketing cookies, or configure them individually at any time.",
+    "Manage your cookie preferences": "Manage your cookie preferences",
+    "Necessary cookies are always enabled. Optional categories stay off unless you turn them on and save your preferences.": "Necessary cookies are always enabled. Optional categories stay off unless you turn them on and save your preferences.",
+    "These cookies are required for core site functionality and are always active.": "These cookies are required for core site functionality and are always active.",
+    "Always active": "Always active",
+    "Help us understand how visitors use the site so we can improve the experience.": "Help us understand how visitors use the site so we can improve the experience.",
+    "Allow future marketing cookies only if you want personalized campaigns or advertising features.": "Allow future marketing cookies only if you want personalized campaigns or advertising features.",
     "The professional address shown is provisional pending confirmation. Replace it with the official address and lawyer-approved wording before launch.": "The professional address shown is provisional pending confirmation. Replace it with the official address and lawyer-approved wording before launch."
 }

@@ -26,6 +26,7 @@
         </main>
         <x-footer />
     </div>
+    <x-cookie-consent />
     @livewireScripts
 </body>
 </html>

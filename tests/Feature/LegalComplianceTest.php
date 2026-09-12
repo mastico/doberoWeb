@@ -214,6 +214,42 @@ class LegalComplianceTest extends TestCase
             ->assertDontSee('Dobero S.L.');
     }
 
+    public function test_public_layout_renders_cookie_consent_banner_and_settings_markup(): void
+    {
+        $this->seed(DatabaseSeeder::class);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('Accept')
+            ->assertSee('Reject')
+            ->assertSee('Configure')
+            ->assertSee('Necessary')
+            ->assertSee('Analytics')
+            ->assertSee('Marketing')
+            ->assertSee('Save preferences')
+            ->assertSee('Cookie Policy')
+            ->assertSee('dobero_cookie_consent', false)
+            ->assertSee('dobero:open-cookie-settings', false)
+            ->assertSee('dobero:consent-changed', false)
+            ->assertSee('necessary', false)
+            ->assertSee('analytics', false)
+            ->assertSee('marketing', false)
+            ->assertSee('version', false)
+            ->assertSee('href="'.url('/cookie-policy').'"', false);
+
+        $this->get('/es')
+            ->assertOk()
+            ->assertSee('Aceptar')
+            ->assertSee('Rechazar')
+            ->assertSee('Configurar')
+            ->assertSee('Necesarias')
+            ->assertSee('Analítica')
+            ->assertSee('Marketing')
+            ->assertSee('Guardar preferencias')
+            ->assertSee('Política de Cookies')
+            ->assertSee('href="'.url('/es/politica-cookies').'"', false);
+    }
+
     public function test_locale_route_returns_the_current_locale_legal_urls(): void
     {
         app()->setLocale('en');
