@@ -5,7 +5,16 @@ use Illuminate\Support\Facades\Schema;
 $locale = app()->getLocale();
 $title = is_array($property->title) ? ($property->title[$locale] ?? $property->title['en'] ?? '') : $property->title;
 $description = is_array($property->description) ? ($property->description[$locale] ?? $property->description['en'] ?? '') : $property->description;
-$firstImage = ! empty($property->images) ? image_url($property->images[0]) : null;
+// Normalize images into an array safely — handle arrays, JSON strings, or null
+$rawImages = $property->images ?? [];
+if (is_string($rawImages)) {
+    $images = json_decode($rawImages, true) ?: [];
+} elseif (is_array($rawImages)) {
+    $images = $rawImages;
+} else {
+    $images = [];
+}
+$firstImage = (! empty($images) && isset($images[0])) ? image_url($images[0]) : null;
 
 $schema = [
     '@context' => 'https://schema.org',
