@@ -19,6 +19,8 @@ class ContactForm extends Component
 
     public ?string $message = null;
 
+    public bool $privacy_consent = false;
+
     public ?string $min_price = null;
 
     public ?string $max_price = null;
@@ -36,15 +38,18 @@ class ContactForm extends Component
             'email' => ['required', 'email', 'max:255'],
             'phone' => ['nullable', 'string', 'max:255'],
             'message' => ['nullable', 'string'],
+            'privacy_consent' => ['accepted'],
             'min_price' => ['nullable', 'numeric'],
             'max_price' => ['nullable', 'numeric'],
             'bedrooms' => ['nullable', 'integer', 'min:0'],
             'bathrooms' => ['nullable', 'integer', 'min:0'],
         ]);
 
+        unset($validated['privacy_consent']);
+
         ContactInquiry::create($validated);
 
-        $this->reset(['inquiry_type', 'first_name', 'last_name', 'email', 'phone', 'message', 'min_price', 'max_price', 'bedrooms', 'bathrooms']);
+        $this->reset(['inquiry_type', 'first_name', 'last_name', 'email', 'phone', 'message', 'privacy_consent', 'min_price', 'max_price', 'bedrooms', 'bathrooms']);
         session()->flash('contact_success', 'Thanks for your inquiry. We will contact you soon.');
     }
 

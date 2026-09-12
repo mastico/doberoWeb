@@ -61,5 +61,18 @@
         <textarea wire:model="message" rows="4" class="form-input" placeholder="{{ __('Tell us about the property you have in mind…') }}"></textarea>
     </div>
 
+    <div>
+        <label class="flex items-start gap-3 text-sm text-slate-600">
+            <input type="checkbox" wire:model="privacy_consent" class="mt-1" required>
+            <span>
+                {{ __('I have read and accept the') }}
+                <a href="{{ locale_route('privacy-policy') }}" class="underline" target="_blank" rel="noopener">
+                    {{ __('Privacy Policy') }}
+                </a>
+            </span>
+        </label>
+        @error('privacy_consent') <p class="form-error">{{ $message }}</p> @enderror
+    </div>
+
     <button class="btn-primary w-full justify-center">{{ __('Send Message') }} <span class="arrow">→</span></button>
 </form>

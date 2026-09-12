@@ -40,6 +40,18 @@
                         </select>
                     </div>
                     <div><label class="form-label">{{ __('Message') }}</label><textarea name="message" rows="6" class="form-input"></textarea></div>
+                    <div>
+                        <label class="flex items-start gap-3 text-sm text-slate-600">
+                            <input type="checkbox" name="privacy_consent" class="mt-1" required>
+                            <span>
+                                {{ __('I have read and accept the') }}
+                                <a href="{{ locale_route('privacy-policy') }}" class="underline" target="_blank" rel="noopener">
+                                    {{ __('Privacy Policy') }}
+                                </a>
+                            </span>
+                        </label>
+                        @error('privacy_consent') <p class="form-error">{{ $message }}</p> @enderror
+                    </div>
                     <button class="btn-primary">{{ __('Submit') }}</button>
                 </form>
             </div>

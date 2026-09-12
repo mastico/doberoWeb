@@ -17,7 +17,10 @@ class ContactController extends Controller
             'email' => ['required', 'email', 'max:255'],
             'phone' => ['nullable', 'string', 'max:255'],
             'message' => ['nullable', 'string'],
+            'privacy_consent' => ['accepted'],
         ]);
+
+        unset($validated['privacy_consent']);
 
         ContactInquiry::create($validated);
 
