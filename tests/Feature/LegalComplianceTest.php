@@ -144,4 +144,54 @@ class LegalComplianceTest extends TestCase
             }
         }
     }
+
+    public function test_legal_pages_render_on_canonical_and_localized_routes(): void
+    {
+        $this->seed(DatabaseSeeder::class);
+
+        $this->get('/legal-notice')
+            ->assertOk()
+            ->assertSee('Legal Notice')
+            ->assertSee('Owner')
+            ->assertSee('János Németh')
+            ->assertSee('Y1962730Q');
+
+        $this->get('/privacy-policy')
+            ->assertOk()
+            ->assertSee('Privacy Policy');
+
+        $this->get('/cookie-policy')
+            ->assertOk()
+            ->assertSee('Cookie Policy');
+
+        $this->get('/es/aviso-legal')
+            ->assertOk()
+            ->assertSee('Aviso Legal')
+            ->assertSee('Y1962730Q')
+            ->assertSee('hreflang="en" href="'.url('/legal-notice').'"', false)
+            ->assertSee('hreflang="es" href="'.url('/es/aviso-legal').'"', false)
+            ->assertSee('hreflang="hu" href="'.url('/hu/jogi-nyilatkozat').'"', false);
+
+        $this->get('/hu/jogi-nyilatkozat')
+            ->assertOk()
+            ->assertSee('Jogi nyilatkozat');
+    }
+
+    public function test_locale_route_returns_the_current_locale_legal_urls(): void
+    {
+        app()->setLocale('en');
+        $this->assertSame(url('/legal-notice'), locale_route('legal-notice'));
+        $this->assertSame(url('/privacy-policy'), locale_route('privacy-policy'));
+        $this->assertSame(url('/cookie-policy'), locale_route('cookie-policy'));
+
+        app()->setLocale('es');
+        $this->assertSame(url('/es/aviso-legal'), locale_route('legal-notice'));
+        $this->assertSame(url('/es/politica-privacidad'), locale_route('privacy-policy'));
+        $this->assertSame(url('/es/politica-cookies'), locale_route('cookie-policy'));
+
+        app()->setLocale('hu');
+        $this->assertSame(url('/hu/jogi-nyilatkozat'), locale_route('legal-notice'));
+        $this->assertSame(url('/hu/adatvedelmi-tajekoztato'), locale_route('privacy-policy'));
+        $this->assertSame(url('/hu/suti-szabalyzat'), locale_route('cookie-policy'));
+    }
 }

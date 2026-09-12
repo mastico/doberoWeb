@@ -66,6 +66,9 @@ $localizedRoutes = function (array $translations = []) use ($corePage): void {
     Route::get($t('relocation'), $corePage('relocation', 'pages.relocation'))->name('relocation');
     Route::get($t('construction'), $corePage('construction', 'pages.construction'))->name('construction');
     Route::get($t('specials'), $corePage('specials', 'pages.specials'))->name('specials');
+    Route::get($t('legal-notice'), $corePage('legal-notice', 'pages.legal'))->name('legal-notice');
+    Route::get($t('privacy-policy'), $corePage('privacy-policy', 'pages.legal'))->name('privacy-policy');
+    Route::get($t('cookie-policy'), $corePage('cookie-policy', 'pages.legal'))->name('cookie-policy');
     Route::get('{slug}', [PageController::class, 'show'])
         ->name('pages.show')
         ->where('slug', '^(?!admin$|dashboard$|login$|logout$|register$|forgot-password$|reset-password$|two-factor-challenge$|up$|es$|hu$)[A-Za-z0-9\-]+$');
