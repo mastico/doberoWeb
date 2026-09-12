@@ -36,6 +36,9 @@ class LegalComplianceTest extends TestCase
             'dirección profesional indicada es provisional y está pendiente de confirmación',
             mb_strtolower($legalNotice->getTranslation('body', 'es'))
         );
+        $this->assertStringContainsString('János Németh – Sole trader', $legalNotice->getTranslation('body', 'en'));
+        $this->assertStringContainsString('János Németh – Autónomo', $legalNotice->getTranslation('body', 'es'));
+        $this->assertStringContainsString('János Németh – Egyéni vállalkozó', $legalNotice->getTranslation('body', 'hu'));
 
         $this->assertSame('politica-privacidad', $privacyPolicy->getTranslation('slug', 'es'));
         $this->assertSame('Política de Privacidad', $privacyPolicy->getTranslation('title', 'es'));
