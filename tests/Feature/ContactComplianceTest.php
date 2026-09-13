@@ -121,18 +121,16 @@ class ContactComplianceTest extends TestCase
             ->assertOk()
             ->assertSee('wire:model="privacy_consent"', false)
             ->assertSeeInOrder([
-                'I have read and accept the',
                 'href="'.url('/privacy-policy').'"',
-                'Privacy Policy',
+                'I have read and accept the Privacy Policy',
             ], false);
 
         $this->get('/contact')
             ->assertOk()
             ->assertSee('name="privacy_consent"', false)
             ->assertSeeInOrder([
-                'I have read and accept the',
                 'href="'.url('/privacy-policy').'"',
-                'Privacy Policy',
+                'I have read and accept the Privacy Policy',
             ], false);
 
         foreach ($localizedHomeExpectations as $path => $privacyPolicyUrl) {
@@ -141,7 +139,14 @@ class ContactComplianceTest extends TestCase
             $response
                 ->assertOk()
                 ->assertSee('wire:model="privacy_consent"', false)
-                ->assertSee('href="'.$privacyPolicyUrl.'"', false);
+                ->assertSee('href="'.$privacyPolicyUrl.'"', false)
+                ->assertSee(
+                    $path === '/es'
+                        ? 'He leído y acepto la Política de Privacidad'
+                        : ($path === '/hu'
+                            ? 'Elolvastam és elfogadom az Adatvédelmi tájékoztatót'
+                            : 'I have read and accept the Privacy Policy')
+                );
 
             $this->assertMatchesRegularExpression($privacyConsentWireModelPattern, $response->getContent());
         }
@@ -152,7 +157,14 @@ class ContactComplianceTest extends TestCase
             $response
                 ->assertOk()
                 ->assertSee('name="privacy_consent"', false)
-                ->assertSee('href="'.$privacyPolicyUrl.'"', false);
+                ->assertSee('href="'.$privacyPolicyUrl.'"', false)
+                ->assertSee(
+                    $path === '/es/contacto'
+                        ? 'He leído y acepto la Política de Privacidad'
+                        : ($path === '/hu/kapcsolat'
+                            ? 'Elolvastam és elfogadom az Adatvédelmi tájékoztatót'
+                            : 'I have read and accept the Privacy Policy')
+                );
 
             $this->assertMatchesRegularExpression($privacyConsentHttpInputPattern, $response->getContent());
         }

@@ -99,7 +99,7 @@
                             x-data
                             x-on:click="window.dispatchEvent(new CustomEvent('dobero:open-cookie-settings'))"
                         >
-                            Cookie Settings
+                            {{ __('Cookie Settings') }}
                         </button>
                     </div>
                 </div>

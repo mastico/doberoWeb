@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             SiteSettingSeeder::class,
             PageSectionSeeder::class,
             PageSeeder::class,
+            LegalComplianceSeeder::class,
             TeamMemberSeeder::class,
             TestimonialSeeder::class,
             ServiceSeeder::class,

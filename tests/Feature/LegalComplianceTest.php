@@ -6,13 +6,34 @@ namespace Tests\Feature;
 
 use App\Models\Page;
 use App\Models\SiteSetting;
+use App\Models\TeamMember;
 use Database\Seeders\DatabaseSeeder;
+use Database\Seeders\LegalComplianceSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class LegalComplianceTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function test_legal_compliance_migration_provides_pages_and_identity_settings_before_seeders_run(): void
+    {
+        foreach (['legal-notice', 'privacy-policy', 'cookie-policy'] as $key) {
+            $this->assertDatabaseHas('pages', ['key' => $key]);
+        }
+
+        foreach ([
+            'legal_owner',
+            'legal_nif',
+            'legal_trade_name',
+            'legal_activity',
+            'legal_address',
+            'phone',
+            'email',
+        ] as $key) {
+            $this->assertDatabaseHas('site_settings', ['key' => $key]);
+        }
+    }
 
     public function test_legal_pages_and_identity_are_seeded(): void
     {
@@ -55,6 +76,70 @@ class LegalComplianceTest extends TestCase
         $this->assertSame('urb.Residencial la Torre 28.', SiteSetting::get('legal_address'));
         $this->assertSame('+34 674 920 844', SiteSetting::get('phone'));
         $this->assertSame('info@dobero.es', SiteSetting::get('email'));
+    }
+
+    public function test_production_restore_seeder_fills_missing_legal_records_without_overwriting_existing_content(): void
+    {
+        $this->seed(DatabaseSeeder::class);
+
+        $editedPage = Page::where('key', 'privacy-policy')->firstOrFail();
+        $editedPage->setTranslation('body', 'en', '<p>Lawyer-edited privacy wording.</p>');
+        $editedPage->save();
+
+        $editedOwner = SiteSetting::where('key', 'legal_owner')->firstOrFail();
+        $editedOwner->setTranslation('value', 'en', 'Edited legal owner');
+        $editedOwner->save();
+
+        Page::whereIn('key', ['legal-notice', 'cookie-policy'])->delete();
+        SiteSetting::whereIn('key', [
+            'legal_nif',
+            'legal_trade_name',
+            'legal_activity',
+            'legal_address',
+        ])->delete();
+
+        $this->artisan('db:seed', ['--class' => LegalComplianceSeeder::class])
+            ->assertSuccessful();
+
+        $this->assertDatabaseHas('pages', ['key' => 'legal-notice']);
+        $this->assertDatabaseHas('pages', ['key' => 'privacy-policy']);
+        $this->assertDatabaseHas('pages', ['key' => 'cookie-policy']);
+        $this->assertDatabaseHas('site_settings', ['key' => 'legal_nif']);
+        $this->assertDatabaseHas('site_settings', ['key' => 'legal_trade_name']);
+        $this->assertDatabaseHas('site_settings', ['key' => 'legal_activity']);
+        $this->assertDatabaseHas('site_settings', ['key' => 'legal_address']);
+
+        $this->assertSame(
+            '<p>Lawyer-edited privacy wording.</p>',
+            Page::where('key', 'privacy-policy')->firstOrFail()->getTranslation('body', 'en')
+        );
+        $this->assertSame('Edited legal owner', SiteSetting::get('legal_owner'));
+    }
+
+    public function test_owner_role_uses_owner_wording_in_all_locales_and_public_team_cards(): void
+    {
+        $this->seed(DatabaseSeeder::class);
+
+        $owner = TeamMember::where('name', 'János Németh')->firstOrFail();
+
+        $this->assertSame('Owner / Sole trader', $owner->getTranslation('role', 'en'));
+        $this->assertSame('Propietario / Autónomo', $owner->getTranslation('role', 'es'));
+        $this->assertSame('Tulajdonos / Egyéni vállalkozó', $owner->getTranslation('role', 'hu'));
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('Owner / Sole trader')
+            ->assertDontSee('CEO');
+
+        $this->get('/es')
+            ->assertOk()
+            ->assertSee('Propietario / Autónomo')
+            ->assertDontSee('CEO');
+
+        $this->get('/hu')
+            ->assertOk()
+            ->assertSee('Tulajdonos / Egyéni vállalkozó')
+            ->assertDontSee('Vezérigazgató');
     }
 
     public function test_legal_route_segments_are_available_for_spanish_and_hungarian(): void
@@ -207,13 +292,18 @@ class LegalComplianceTest extends TestCase
             ->assertSee('Aviso Legal')
             ->assertSee('Política de Privacidad')
             ->assertSee('Política de Cookies')
-            ->assertSee('Cookie Settings')
+            ->assertSee('Configuración de Cookies')
             ->assertSee('La dirección profesional mostrada es provisional y está pendiente de confirmación. Sustitúyala por la dirección oficial y por un texto aprobado por asesoría jurídica antes del lanzamiento.')
             ->assertSee('href="'.url('/es/aviso-legal').'"', false)
             ->assertSee('href="'.url('/es/politica-privacidad').'"', false)
             ->assertSee('href="'.url('/es/politica-cookies').'"', false)
             ->assertDontSee('CEO')
             ->assertDontSee('Dobero S.L.');
+
+        $this->get('/hu')
+            ->assertOk()
+            ->assertSee('Cookie-beállítások')
+            ->assertSee('Jogi nyilatkozat');
     }
 
     public function test_public_layout_renders_cookie_consent_banner_and_settings_markup(): void
