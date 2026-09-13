@@ -2,7 +2,6 @@
 <x-seo.property-schema :property="$property" />
 
 {{-- ── Gallery lightbox (Alpine) ───────────────────── --}}
-@if (count($images))
 <div
     x-data="{
         open: false,
@@ -249,6 +248,15 @@
                             <label class="form-label">Message</label>
                             <textarea wire:model="inquiry.message" rows="4" class="form-input"></textarea>
                         </div>
+                        <div>
+                            <label class="flex items-start gap-3 text-sm text-ink/70">
+                                <input type="checkbox" wire:model="inquiry.privacy_consent" class="mt-1" required>
+                                <a href="{{ locale_route('privacy-policy') }}" class="underline" target="_blank" rel="noopener">
+                                    {{ __('I have read and accept the Privacy Policy') }}
+                                </a>
+                            </label>
+                            @error('inquiry.privacy_consent') <p class="form-error">{{ $message }}</p> @enderror
+                        </div>
                         <button class="btn-accent w-full justify-center">Send enquiry <span class="arrow">→</span></button>
                     </form>
                 </div>
@@ -357,4 +365,3 @@
 </div>
 
 </div>{{-- end Alpine x-data --}}
-@endif{{-- end if images --}}

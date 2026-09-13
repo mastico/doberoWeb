@@ -17,6 +17,7 @@ class PropertyDetail extends Component
         'email' => '',
         'phone' => '',
         'message' => '',
+        'privacy_consent' => false,
     ];
 
     public function mount(string $slug): void
@@ -35,14 +36,24 @@ class PropertyDetail extends Component
             'inquiry.email' => ['required', 'email', 'max:255'],
             'inquiry.phone' => ['nullable', 'string', 'max:255'],
             'inquiry.message' => ['required', 'string'],
+            'inquiry.privacy_consent' => ['accepted'],
         ]);
+
+        unset($data['inquiry']['privacy_consent']);
 
         ContactInquiry::create($data['inquiry'] + [
             'inquiry_type' => 'property_inquiry',
             'property_id' => $this->property->id,
         ]);
 
-        $this->inquiry = ['first_name' => '', 'last_name' => '', 'email' => '', 'phone' => '', 'message' => ''];
+        $this->inquiry = [
+            'first_name' => '',
+            'last_name' => '',
+            'email' => '',
+            'phone' => '',
+            'message' => '',
+            'privacy_consent' => false,
+        ];
         session()->flash('inquiry_success', 'We have received your inquiry.');
     }
 

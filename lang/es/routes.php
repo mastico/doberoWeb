@@ -9,4 +9,7 @@ return [
     'relocation' => 'reubicacion',
     'construction' => 'construccion',
     'specials' => 'ofertas',
+    'legal-notice' => 'aviso-legal',
+    'privacy-policy' => 'politica-privacidad',
+    'cookie-policy' => 'politica-cookies',
 ];

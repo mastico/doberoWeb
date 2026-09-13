@@ -86,10 +86,12 @@ php artisan migrate:fresh --seed
 composer dev
 ```
 
-> **Restore from SQL dump** (skips seeding, uses exact data from this repo):
+> **Restore from SQL dump** (the legal-compliance supplement fills any missing legal records without replacing edited content):
 > ```bash
-> php artisan migrate:fresh
+> php artisan db:wipe --force
 > php artisan tinker --execute="DB::unprepared(file_get_contents(database_path('database.sql')));"
+> php artisan migrate --force
+> php artisan db:seed --class=LegalComplianceSeeder
 > ```
 
 **Other useful commands:**
@@ -153,7 +155,7 @@ config/
   translation_pages.php            # maps all JSON keys to page groups
 
 database/
-  migrations/                      # 25 migrations
+  migrations/                      # schema and data migrations
   seeders/                         # full seed data with local image paths
   database.sql                     # SQL dump of current data (restore source)
 
@@ -559,11 +561,13 @@ php artisan key:generate
 # Edit .env: APP_URL, DB_* if using MySQL
 
 # Database — option A: exact data from SQL dump
-php artisan migrate
+php artisan db:wipe --force
 php artisan tinker --execute="DB::unprepared(file_get_contents(database_path('database.sql')));"
+php artisan migrate --force
+php artisan db:seed --class=LegalComplianceSeeder --force
 
 # Database — option B: fresh seed from seeders
-php artisan migrate:fresh --seed
+php artisan migrate:fresh --seed --force
 
 # Storage symlink (required for admin image uploads)
 php artisan storage:link
@@ -579,7 +583,8 @@ php artisan view:cache
 ```bash
 git pull
 composer install --no-dev --optimize-autoloader
-php artisan migrate
+php artisan migrate --force
+php artisan db:seed --class=LegalComplianceSeeder --force
 php artisan config:cache && php artisan route:cache && php artisan view:cache
 npm ci && npm run build
 ```

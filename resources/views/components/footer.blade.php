@@ -1,7 +1,17 @@
 @php
-    $year  = now()->year;
+    $year = now()->year;
     $about = \App\Models\SiteSetting::get('footer_about',
         'DOBERO combines property search, relocation support, construction guidance, and local expertise to help international buyers invest with confidence on the Costa Blanca.');
+    $legalOwner = \App\Models\SiteSetting::get('legal_owner', 'János Németh');
+    $legalTradeName = \App\Models\SiteSetting::get('legal_trade_name', 'DOBERO');
+    $legalActivity = \App\Models\SiteSetting::get('legal_activity', 'Real estate brokerage and real estate services');
+    $legalStatus = __('Sole trader');
+    $legalOwnerLabel = app()->isLocale('es') ? 'Propietario' : __('Owner');
+    $legalNif = \App\Models\SiteSetting::get('legal_nif');
+    $legalAddress = \App\Models\SiteSetting::get('legal_address', \App\Models\SiteSetting::get('address', 'Costa Blanca, Spain'));
+    $phone = \App\Models\SiteSetting::get('phone', '+1 (800) 990 8877');
+    $email = \App\Models\SiteSetting::get('email', 'info@dobero.es');
+    $provisionalAddressNotice = __('The professional address shown is provisional pending confirmation. Replace it with the official address and lawyer-approved wording before launch.');
 @endphp
 
 <footer class="bg-navy text-white">
@@ -35,7 +45,10 @@
                             <path stroke-linecap="round" stroke-linejoin="round"
                                   d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/>
                         </svg>
-                        <span>{{ \App\Models\SiteSetting::get('address', 'Costa Blanca, Spain') }}</span>
+                        <span>
+                           <span class="block">{{ $legalAddress }}</span>
+                           <span class="mt-2 block text-[12px] leading-6 text-white/50">{{ $provisionalAddressNotice }}</span>
+                        </span>
                     </li>
                     <li class="flex items-center gap-3 font-body text-[14px] font-light text-white/65">
                         {{-- Phone --}}
@@ -44,9 +57,9 @@
                             <path stroke-linecap="round" stroke-linejoin="round"
                                   d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z"/>
                         </svg>
-                        <a href="tel:{{ \App\Models\SiteSetting::get('phone') }}"
+                        <a href="tel:{{ $phone }}"
                            class="hover:text-primary transition-colors">
-                            {{ \App\Models\SiteSetting::get('phone', '+1 (800) 990 8877') }}
+                            {{ $phone }}
                         </a>
                     </li>
                     <li class="flex items-center gap-3 font-body text-[14px] font-light text-white/65">
@@ -56,12 +69,40 @@
                             <path stroke-linecap="round" stroke-linejoin="round"
                                   d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"/>
                         </svg>
-                        <a href="mailto:{{ \App\Models\SiteSetting::get('email', 'info@dobero.es') }}"
+                        <a href="mailto:{{ $email }}"
                            class="hover:text-primary transition-colors">
-                            {{ \App\Models\SiteSetting::get('email', 'info@dobero.es') }}
+                            {{ $email }}
                         </a>
                     </li>
                 </ul>
+
+                <div class="mt-8 border-t border-white/10 pt-6">
+                    <div class="space-y-2 font-body text-[14px] font-light text-white/65">
+                        <p>{{ $legalOwnerLabel }}: {{ $legalOwner }} – {{ $legalStatus }}</p>
+                        <p>{{ __('NIF') }}: {{ $legalNif }}</p>
+                        <p>{{ __('Business activity') }}: {{ $legalActivity }}</p>
+                    </div>
+
+                    <div class="mt-5 flex flex-wrap gap-x-4 gap-y-2 font-sans text-[13px] font-medium text-white/65">
+                        <a href="{{ locale_route('legal-notice') }}" class="hover:text-primary transition-colors">
+                            {{ __('Legal Notice') }}
+                        </a>
+                        <a href="{{ locale_route('privacy-policy') }}" class="hover:text-primary transition-colors">
+                            {{ __('Privacy Policy') }}
+                        </a>
+                        <a href="{{ locale_route('cookie-policy') }}" class="hover:text-primary transition-colors">
+                            {{ __('Cookie Policy') }}
+                        </a>
+                        <button
+                            type="button"
+                            class="hover:text-primary transition-colors"
+                            x-data
+                            x-on:click="window.dispatchEvent(new CustomEvent('dobero:open-cookie-settings'))"
+                        >
+                            {{ __('Cookie Settings') }}
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -70,7 +111,7 @@
     <div class="border-t border-white/10">
         <div class="houzez-container flex flex-col items-center justify-between gap-4 py-5 md:flex-row">
             <p class="font-body text-[13px] font-light text-white/50">
-                © {{ $year }} Dobero S.L. All rights reserved.
+                © {{ $year }} {{ $legalOwner }} – Dobero.es - {{ $legalTradeName }}. All rights reserved.
             </p>
             {{-- Social icons --}}
             <div class="flex items-center gap-4">

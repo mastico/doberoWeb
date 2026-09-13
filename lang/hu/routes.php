@@ -9,4 +9,7 @@ return [
     'relocation' => 'koltozes',
     'construction' => 'epitkezes',
     'specials' => 'ajanlatok',
+    'legal-notice' => 'jogi-nyilatkozat',
+    'privacy-policy' => 'adatvedelmi-tajekoztato',
+    'cookie-policy' => 'suti-szabalyzat',
 ];

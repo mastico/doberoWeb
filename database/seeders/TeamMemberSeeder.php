@@ -13,7 +13,7 @@ class TeamMemberSeeder extends Seeder
             [
                 'name' => 'János Németh',
                 'photo' => '/images/defaults/team-janos.jpg',
-                'role' => ['en' => 'CEO', 'es' => 'CEO', 'hu' => 'Vezérigazgató'],
+                'role' => ['en' => 'Owner / Sole trader', 'es' => 'Propietario / Autónomo', 'hu' => 'Tulajdonos / Egyéni vállalkozó'],
                 'bio' => ['en' => 'János leads DOBERO with decades of cross-border property consulting and investment strategy experience on the Costa Blanca.', 'es' => 'János lidera DOBERO con décadas de experiencia en consultoría de propiedades transfronterizas y estrategia de inversión en la Costa Blanca.', 'hu' => 'János évtizedes határokon átnyúló ingatlan-tanácsadási és befektetési stratégiai tapasztalattal vezeti a DOBERO-t a Costa Blancán.'],
                 'sort_order' => 1,
             ],
